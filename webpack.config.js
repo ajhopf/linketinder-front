@@ -5,8 +5,8 @@ const CopyPlugin = require("copy-webpack-plugin");
 module.exports = {
     mode: 'production',
     entry: {
-        index: './src/js/main.ts',
-        registration: './src/js/registration/registration.ts',
+        index: './src/main.ts',
+        registration: './src/components/registration.ts',
     },
     output: {
         filename: '[name].min.js', // Output filenames based on entry names

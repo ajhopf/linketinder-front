@@ -43,7 +43,7 @@ const toggleForm = () => {
     }
 
     toggleUserTypeLabel.textContent = text;
-    buildForm();
+    buildRegistrationForm();
 }
 
 
@@ -56,7 +56,7 @@ const textInputBuilder = (input: Input): string => {
    `
 };
 
-const buildForm = () => {
+const buildRegistrationForm = () => {
     const inputContainer = document.getElementById("inputs-container");
     const registrationType = form.getAttribute("data-registration-type")
 
@@ -81,9 +81,9 @@ const buildForm = () => {
     }
 }
 
-const addFormEventListeners = () => {
+const addRegistrationFormEventListeners = () => {
     const toggleUserTypeCheckbox = <HTMLInputElement> document.getElementById("toggle-user-type-checkbox")!;
     toggleUserTypeCheckbox.addEventListener('change', toggleForm);
 }
 
-export { buildForm, addFormEventListeners }
+export { buildRegistrationForm, addRegistrationFormEventListeners }

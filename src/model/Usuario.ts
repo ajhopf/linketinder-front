@@ -8,4 +8,5 @@ export default interface Usuario {
     descricao: string;
     endereco: Endereco;
     competencias: Competencia[];
+
 }
