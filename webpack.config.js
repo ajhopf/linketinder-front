@@ -1,12 +1,12 @@
 const path = require('path')
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const autoprefixer = require("autoprefixer");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     mode: 'production',
     entry: {
-        index: './src/main.ts',
-        about: './src/about.ts',
+        index: './src/js/main.ts',
+        registration: './src/js/registration/registration.ts',
     },
     output: {
         filename: '[name].min.js', // Output filenames based on entry names
@@ -21,11 +21,14 @@ module.exports = {
             minify: false
         }),
         new HtmlWebpackPlugin({
-            template: './public/about.html',
-            chunks: ['about'],
-            filename: 'about.html',
+            template: './public/registration.html',
+            chunks: ['registration'],
+            filename: 'registration.html',
             minify: false
         }),
+        new CopyPlugin({
+            patterns: [{from: 'public/css', to:'css/'}]
+        })
     ],
     resolve: {
         extensions: ['.ts', '.js']
@@ -41,34 +44,6 @@ module.exports = {
                 test: /\.ts$/,
                 use: 'ts-loader',
                 exclude: /node_modules/
-            },
-            {
-                test: /\.(scss)$/,
-                use: [
-                    {
-                        // Adds CSS to the DOM by injecting a `<style>` tag
-                        loader: 'style-loader'
-                    },
-                    {
-                        // Interprets `@import` and `url()` like `import/require()` and will resolve them
-                        loader: 'css-loader'
-                    },
-                    {
-                        // Loader for webpack to process CSS with PostCSS
-                        loader: 'postcss-loader',
-                        options: {
-                            postcssOptions: {
-                                plugins: [
-                                    autoprefixer
-                                ]
-                            }
-                        }
-                    },
-                    {
-                        // Loads a SASS/SCSS file and compiles it to CSS
-                        loader: 'sass-loader'
-                    }
-                ]
             }
         ]
     }
