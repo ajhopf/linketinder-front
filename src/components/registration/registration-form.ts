@@ -4,9 +4,10 @@ import Endereco from "../../model/Endereco";
 import Empresa from "../../model/Empresa";
 import Candidato from "../../model/Candidato";
 import {EmailInUseError} from "../../errors/email-in-use-error";
-import {addEventListenersToRenderedInputs, removeEventListeners} from "./registration-form-input-event-listeners";
-import {ValidationErrors, validationErrors} from "./registration-form-input-handlers";
+import {addEventListenersToRenderedInputs, removeEventListeners} from "./event-listeners";
+import {ValidationErrors, validationErrors} from "./input-handlers";
 import {FormInvalidError} from "../../errors/form-invalid-error";
+import Competencia from "../../model/Competencia";
 
 interface Input {
     title: string;
@@ -23,7 +24,7 @@ const defaultInputs: Input[] = [
     { title: 'Email', id:'email', type: 'email', error: 'Email já está em uso'},
     { title: 'Senha', id:'senha', type: 'password', minlength: '6'},
     { title: 'Confirme a senha', id:'confirme-senha', type: 'password',  error: 'As senhas devem ser iguais!'},
-    { title: 'Descrição', id: 'descricao', type: 'text'},
+    { title: 'Descrição', id: 'descricao', type: 'text-area'},
     {
         title: 'Cep',
         id: 'cep',
@@ -43,6 +44,8 @@ const candidatoInputs: Input[] = [
 const empresaInputs: Input[] = [
     {title: 'Cnpj', id: 'cnpj', type: 'text', minlength: '14', maxlength: '18', error: 'Cnpj inválido'},
 ]
+
+const userCompetencias: Competencia[] = [];
 
 const form = <HTMLFormElement> document.getElementById('registration-form')!;
 const toggleUserTypeCheckbox = <HTMLInputElement> document.getElementById("toggle-user-type-checkbox");
@@ -69,7 +72,7 @@ const toggleForm = () => {
 
 const textInputBuilder = (input: Input): string => {
     return `
-    <div class="form-section mb-3">
+    <div class="form-section mb-3 ${input.id === 'cnpj' ? 'col-10' : 'col-5'}">
         <label for=${input.id} class="form-label">${input.title}</label>
         <input 
             type=${input.type} 
@@ -87,6 +90,31 @@ const textInputBuilder = (input: Input): string => {
     </div>
    `
 };
+
+const competenciasInputBuilder = (): string => {
+    return `
+    <div class="d-flex flex-column col-5">
+        <div>
+            <label for="competencia" class="form-label">Competencias</label>
+            <input type="text" id="competencia" class="form-control mb-3">
+        </div>
+        <div>
+            <label for="experiencia-competencia" class="form-label">Anos de Experiência</label>
+            <input type="number" step="0.5" id="experiencia-competencia" class="form-control mb-3">
+        </div>
+       
+        <button type="button" id="competencia-btn" class="btn btn-outline-primary">Adicionar Competencia</button>
+    </div>
+    <div class="col-5 text-center">
+        <p class="mb-2">Lista de Competências Adicionadas</p>
+        <small>Clique em uma competência para removê-la da lista</small>
+        <ul id="competencias-list" class="list-group text-center">
+            
+        </ul>
+    </div>
+    
+    `
+}
 
 const buildRegistrationForm = () => {
     const inputContainer = <HTMLDivElement> document.getElementById("inputs-container");
@@ -110,6 +138,8 @@ const buildRegistrationForm = () => {
         })
     }
 
+    inputContainer.innerHTML += competenciasInputBuilder();
+
     addEventListenersToRenderedInputs();
 }
 
@@ -132,13 +162,17 @@ const submitRegistration = (event: SubmitEvent) => {
             }
         }
 
+        if (userCompetencias.length === 0) {
+            throw new FormInvalidError('Adicione ao menos uma competência')
+        }
+
         const data = new FormData(form);
 
         const usuario: Usuario = {
             id: 0,
             nome: <string> data.get('nome'),
             senha: <string> data.get('senha'),
-            competencias: [],
+            competencias: userCompetencias,
             descricao: <string> data.get('descricao'),
             email: <string> data.get('email'),
             endereco: <Endereco> {
@@ -175,6 +209,7 @@ const submitRegistration = (event: SubmitEvent) => {
 
         if (e instanceof FormInvalidError) {
             const formError = <HTMLElement> document.getElementById('form-error-message');
+            formError.innerText = e.message;
             formError.removeAttribute('hidden')
         }
     }
@@ -185,4 +220,4 @@ const addRegistrationFormEventListeners = () => {
     form.addEventListener('submit', submitRegistration);
 }
 
-export { buildRegistrationForm, addRegistrationFormEventListeners }
+export { buildRegistrationForm, addRegistrationFormEventListeners, userCompetencias }

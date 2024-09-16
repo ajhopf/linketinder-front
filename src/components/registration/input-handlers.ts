@@ -1,5 +1,7 @@
 import {searchCep} from "../../utils/cep";
 import {formatCnpj, formatCpf} from "../../utils/cpf";
+import Competencia from "../../model/Competencia";
+import {userCompetencias} from "./registration-form";
 
 interface ValidationErrors {
     cep: boolean,
@@ -82,4 +84,51 @@ const handleSenhaBlur = () => {
     }
 }
 
-export {handleSenhaBlur, handleCepBlur, handleCpfBlur, handleCnpjBlur, validationErrors, ValidationErrors}
+const handleAddCompetencia = () => {
+    const competenciaInput = <HTMLInputElement> document.getElementById('competencia');
+    const competenciaExperiencia = <HTMLInputElement> document.getElementById('experiencia-competencia')
+    const competenciasList = <HTMLUListElement> document.getElementById('competencias-list');
+
+    if (competenciaInput.value.length > 0 && Number(competenciaExperiencia.value) > 0) {
+        if (userCompetencias.find(competencia => competencia.competencia === competenciaInput.value)) {
+            return;
+        }
+
+        const newCompetencia: Competencia = {
+            competencia: <string> competenciaInput.value,
+            anosExperencia: Number(competenciaExperiencia.value)
+        }
+
+        userCompetencias.push(newCompetencia);
+
+        competenciasList.innerHTML += `
+            <li id="${competenciaInput.value}" class="list-group-item d-flex justify-content-around" style="cursor: pointer">
+                <p class="mb-0">${competenciaInput.value}</p>
+                <p class="mb-0">|</p>
+                <p class="mb-0">${Number(competenciaExperiencia.value)} anos</p>
+            </li>`
+
+        document.getElementById(competenciaInput.value)!.addEventListener('click', handleRemoveCompetencia)
+
+        competenciaInput.value = '';
+        competenciaExperiencia.value = '';
+    }
+}
+
+const handleRemoveCompetencia = (event: Event) => {
+    const eventTarget = event.currentTarget as HTMLLIElement;
+
+    if (eventTarget) {
+        const liId = eventTarget.id;
+        console.log("Clicked LI ID:", liId);
+        const idx = userCompetencias.findIndex(competencia => competencia.competencia === liId);
+        userCompetencias.splice(idx, 1);
+        console.log(userCompetencias)
+    }
+
+    eventTarget.removeEventListener('click', handleRemoveCompetencia);
+    eventTarget.remove();
+}
+
+
+export {handleSenhaBlur, handleCepBlur, handleCpfBlur, handleCnpjBlur, handleAddCompetencia, validationErrors, ValidationErrors}

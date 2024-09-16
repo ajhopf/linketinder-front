@@ -26,7 +26,6 @@ const loginUser = (userEmail: string, userPassword: string, type: 'empresas' | '
             throw new WrongCredentialsError('Usuário não encontrado')
         }
     }
-
 }
 
 const registerUser = (user: Usuario, type: 'empresa' | 'candidato'): Usuario => {
