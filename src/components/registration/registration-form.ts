@@ -1,18 +1,20 @@
-import {registerUser} from "../../database/local-storage";
+import {loginUser, registerUser} from "../../database/local-storage";
 import Usuario from "../../model/Usuario";
 import Endereco from "../../model/Endereco";
 import Empresa from "../../model/Empresa";
 import Candidato from "../../model/Candidato";
+import {EmailInUseError} from "../../errors/email-in-use-error";
 
 interface Input {
     title: string;
     id: string;
     type: string;
+    error?: string
 }
 
 const defaultInputs: Input[] = [
     { title: 'Nome', id: 'nome', type: 'text'},
-    { title: 'Email', id:'email', type: 'text'},
+    { title: 'Email', id:'email', type: 'text', error: 'Email já está em uso'},
     { title: 'Senha', id:'senha', type: 'text'},
     { title: 'Descrição', id: 'descricao', type: 'text'},
     { title: 'Cep', id: 'cep', type: 'text'},
@@ -41,11 +43,11 @@ const toggleForm = () => {
     if (isEmpresa) {
         text = 'Registro de Empresa';
         pageTitle.innerHTML = 'Criar Conta Empresarial'
-        form.setAttribute('data-registration-type', 'empresa')
+        form.setAttribute('data-registration-type', 'empresas')
     } else {
         text = 'Registro de Candidato';
         pageTitle.innerHTML = 'Criar Conta de Candidato'
-        form.setAttribute('data-registration-type', 'candidato')
+        form.setAttribute('data-registration-type', 'candidatos')
     }
 
     toggleUserTypeLabel.textContent = text;
@@ -57,6 +59,9 @@ const textInputBuilder = (input: Input): string => {
     <div class="form-section mb-3">
         <label for=${input.id} class="form-label">${input.title}</label>
         <input type=${input.type} id=${input.id} name=${input.id} class="form-control" >
+        <div class="d-flex justify-content-center my-3">
+           <small hidden id="${input.id}-error-message" class="text-danger text-center">${input.error}</small>
+        </div>
     </div>
    `
 };
@@ -71,7 +76,7 @@ const buildRegistrationForm = () => {
         inputContainer.innerHTML += textInputBuilder(input)
     })
 
-    if (registrationType === 'candidato') {
+    if (registrationType === 'candidatos') {
         candidatoInputs.forEach((input) => {
             inputContainer.innerHTML += textInputBuilder(input)
         })
@@ -94,24 +99,40 @@ const submitRegistration = (event: SubmitEvent) => {
         competencias: [],
         descricao: <string> data.get('descricao'),
         email: <string> data.get('email'),
-        endereco: <Endereco> {id: 0, cep: "88063074", estado: "SC", pais: "Brasil"}
+        endereco: <Endereco> {
+            cep: <string> data.get('cep'),
+            estado: <string> data.get('estado'),
+            pais: <string> data.get('pais')
+        }
     }
 
-    if (form.getAttribute('data-registration-type') === 'empresa') {
-        const empresa: Empresa = {
-            ...usuario,
-            cnpj: <string> data.get('cnpj')
+    try {
+        const registrationType = <'empresas' | 'candidatos'> form.getAttribute('data-registration-type')
+
+        if (registrationType === 'empresas') {
+            const empresa: Empresa = {
+                ...usuario,
+                cnpj: <string> data.get('cnpj')
+            }
+
+            registerUser(empresa, "empresa");
+        } else {
+            const candidato: Candidato = {
+                ...usuario,
+                cpf: <string> data.get('cpf'),
+                idade: Number(data.get('idade'))
+            }
+
+            registerUser(candidato, "candidato");
         }
 
-        registerUser(empresa, "empresa");
-    } else {
-        const candidato: Candidato = {
-            ...usuario,
-            cpf: <string> data.get('cpf'),
-            idade: Number(data.get('idade'))
-        }
+        loginUser(usuario.email, usuario.senha, registrationType)
 
-        registerUser(candidato, "candidato");
+    } catch (e) {
+        if (e instanceof EmailInUseError) {
+            const emailError = <HTMLElement> document.getElementById('email-error-message');
+            emailError.removeAttribute('hidden')
+        }
     }
 
 }
