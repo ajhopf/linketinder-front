@@ -1,4 +1,4 @@
-import {CepInvalidoError} from "../errors/cep-invalido-error";
+import {CepInvalidError} from "../errors/cep-invalid-error";
 
 const searchCep = async (cepInput: HTMLInputElement, estado: HTMLInputElement, pais: HTMLInputElement) => {
     const cep = cepInput.value;
@@ -14,7 +14,7 @@ const searchCep = async (cepInput: HTMLInputElement, estado: HTMLInputElement, p
             const response = await fetch(`https://viacep.com.br/ws/${cepFormatado}/json/`)
 
             if (!response.ok) {
-                throw new CepInvalidoError(`Response status: ${response.status}`);
+                throw new CepInvalidError(`Response status: ${response.status}`);
             }
             const data = await response.json();
 
@@ -22,10 +22,10 @@ const searchCep = async (cepInput: HTMLInputElement, estado: HTMLInputElement, p
             pais.value = "Brasil"
         }
         else {
-            throw new CepInvalidoError("Formato de CEP inválido.");
+            throw new CepInvalidError("Formato de CEP inválido.");
         }
     } else {
-        throw new CepInvalidoError('Cep inválido')
+        throw new CepInvalidError('Cep inválido')
     }
 };
 

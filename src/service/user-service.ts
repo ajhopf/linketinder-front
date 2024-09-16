@@ -1,7 +1,7 @@
 import Usuario from "../model/Usuario";
 import Empresa from "../model/Empresa";
 import Candidato from "../model/Candidato";
-import {comparePassword, hashPassword} from "./bcrypt";
+import {comparePassword, hashPassword} from "../utils/bcrypt";
 import {WrongCredentialsError} from "../errors/wrong-credentials-error";
 import {EmailInUseError} from "../errors/email-in-use-error";
 

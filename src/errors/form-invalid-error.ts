@@ -1,4 +1,4 @@
-export class CepInvalidoError extends Error {
+export class FormInvalidError extends Error {
     constructor(props: string | undefined) {
         super(props);
     }

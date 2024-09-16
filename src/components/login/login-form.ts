@@ -1,4 +1,4 @@
-import {loginUser} from "../../database/local-storage";
+import {loginUser} from "../../service/user-service";
 
 const loginForm = <HTMLFormElement> document.getElementById('login-form');
 const toggleUserTypeCheckbox = <HTMLInputElement> document.getElementById("toggle-user-type-checkbox");

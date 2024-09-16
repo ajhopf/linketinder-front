@@ -1,24 +1,28 @@
-import {loginUser, registerUser} from "../../database/local-storage";
+import {loginUser, registerUser} from "../../service/user-service";
 import Usuario from "../../model/Usuario";
 import Endereco from "../../model/Endereco";
 import Empresa from "../../model/Empresa";
 import Candidato from "../../model/Candidato";
 import {EmailInUseError} from "../../errors/email-in-use-error";
-import {searchCep} from "../../utils/cep";
+import {addEventListenersToRenderedInputs, removeEventListeners} from "./registration-form-input-event-listeners";
+import {ValidationErrors, validationErrors} from "./registration-form-input-handlers";
+import {FormInvalidError} from "../../errors/form-invalid-error";
 
 interface Input {
     title: string;
     id: string;
     type: string;
     error?: string;
+    minlength?: string;
     maxlength?: string;
     readonly?: boolean;
 }
 
 const defaultInputs: Input[] = [
     { title: 'Nome', id: 'nome', type: 'text'},
-    { title: 'Email', id:'email', type: 'text', error: 'Email já está em uso'},
-    { title: 'Senha', id:'senha', type: 'text'},
+    { title: 'Email', id:'email', type: 'email', error: 'Email já está em uso'},
+    { title: 'Senha', id:'senha', type: 'password', minlength: '6'},
+    { title: 'Confirme a senha', id:'confirme-senha', type: 'password',  error: 'As senhas devem ser iguais!'},
     { title: 'Descrição', id: 'descricao', type: 'text'},
     {
         title: 'Cep',
@@ -32,12 +36,12 @@ const defaultInputs: Input[] = [
 ];
 
 const candidatoInputs: Input[] = [
-    {title: 'Cpf', id: 'cpf', type: 'text'},
+    {title: 'Cpf', id: 'cpf', type: 'text', minlength: '11', maxlength: '14', error: 'Cpf inválido'},
     {title: 'Idade', id: 'idade', type: 'text'}
 ]
 
 const empresaInputs: Input[] = [
-    {title: 'Cnpj', id: 'cnpj', type: 'text'},
+    {title: 'Cnpj', id: 'cnpj', type: 'text', minlength: '14', maxlength: '18', error: 'Cnpj inválido'},
 ]
 
 const form = <HTMLFormElement> document.getElementById('registration-form')!;
@@ -68,12 +72,14 @@ const textInputBuilder = (input: Input): string => {
     <div class="form-section mb-3">
         <label for=${input.id} class="form-label">${input.title}</label>
         <input 
-        type=${input.type} 
-        id=${input.id} 
-        name=${input.id} 
-        class="form-control" 
-        ${input.maxlength && 'maxlength='+input.maxlength }
-        ${input.readonly && 'disabled'}
+            type=${input.type} 
+            id=${input.id} 
+            name=${input.id} 
+            class="form-control" 
+            required
+            ${input.maxlength && 'maxlength='+input.maxlength }
+            ${input.minlength && 'minlength='+input.minlength }
+            ${input.readonly && 'disabled'}
         >
         <div class="d-flex justify-content-center my-3">
            <small hidden id="${input.id}-error-message" class="text-danger text-center">${input.error}</small>
@@ -85,6 +91,8 @@ const textInputBuilder = (input: Input): string => {
 const buildRegistrationForm = () => {
     const inputContainer = <HTMLDivElement> document.getElementById("inputs-container");
     const registrationType = form.getAttribute("data-registration-type")
+
+    removeEventListeners()
 
     inputContainer.innerHTML = '';
 
@@ -101,29 +109,44 @@ const buildRegistrationForm = () => {
             inputContainer.innerHTML += textInputBuilder(input)
         })
     }
+
+    addEventListenersToRenderedInputs();
 }
 
 const submitRegistration = (event: SubmitEvent) => {
     event.preventDefault();
 
-    const data = new FormData(form);
-
-    const usuario: Usuario = {
-        id: 0,
-        nome: <string> data.get('nome'),
-        senha: <string> data.get('senha'),
-        competencias: [],
-        descricao: <string> data.get('descricao'),
-        email: <string> data.get('email'),
-        endereco: <Endereco> {
-            cep: <string> data.get('cep'),
-            estado: <string> data.get('estado'),
-            pais: <string> data.get('pais')
-        }
-    }
-
     try {
         const registrationType = <'empresas' | 'candidatos'> form.getAttribute('data-registration-type')
+        let key: keyof ValidationErrors
+
+        for (key in validationErrors) {
+            if (validationErrors[key]) {
+                if (registrationType === 'empresas' && key === 'cpf') {
+                    break;
+                } else if (registrationType === 'candidatos' && key === 'cnpj') {
+                    break;
+                } else {
+                    throw new FormInvalidError('Formulário inválido')
+                }
+            }
+        }
+
+        const data = new FormData(form);
+
+        const usuario: Usuario = {
+            id: 0,
+            nome: <string> data.get('nome'),
+            senha: <string> data.get('senha'),
+            competencias: [],
+            descricao: <string> data.get('descricao'),
+            email: <string> data.get('email'),
+            endereco: <Endereco> {
+                cep: <string> data.get('cep'),
+                estado: <string> data.get('estado'),
+                pais: <string> data.get('pais')
+            }
+        }
 
         if (registrationType === 'empresas') {
             const empresa: Empresa = {
@@ -149,31 +172,17 @@ const submitRegistration = (event: SubmitEvent) => {
             const emailError = <HTMLElement> document.getElementById('email-error-message');
             emailError.removeAttribute('hidden')
         }
-    }
-}
 
-const handleCepBlur = async () => {
-    const cepInput = <HTMLInputElement> document.getElementById('cep');
-    const estadoInput = <HTMLInputElement> document.getElementById('estado');
-    const paisInput = <HTMLInputElement> document.getElementById('pais');
-    const cepError = <HTMLElement> document.getElementById('cep-error-message');
-
-    try {
-        await searchCep(cepInput, estadoInput, paisInput)
-        if (!cepError.hasAttribute('hidden')) {
-            cepError.setAttribute('hidden', 'true');
+        if (e instanceof FormInvalidError) {
+            const formError = <HTMLElement> document.getElementById('form-error-message');
+            formError.removeAttribute('hidden')
         }
-    } catch (e) {
-        cepError.removeAttribute('hidden')
     }
 }
-
 
 const addRegistrationFormEventListeners = () => {
     toggleUserTypeCheckbox.addEventListener('change', toggleForm);
     form.addEventListener('submit', submitRegistration);
-    const cepInput = <HTMLInputElement> document.getElementById('cep');
-    cepInput.addEventListener('blur', handleCepBlur)
 }
 
 export { buildRegistrationForm, addRegistrationFormEventListeners }
