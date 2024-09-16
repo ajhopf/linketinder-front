@@ -1,3 +1,9 @@
+import {registerUser} from "../../database/local-storage";
+import Usuario from "../../model/Usuario";
+import Endereco from "../../model/Endereco";
+import Empresa from "../../model/Empresa";
+import Candidato from "../../model/Candidato";
+
 interface Input {
     title: string;
     id: string;
@@ -7,6 +13,7 @@ interface Input {
 const defaultInputs: Input[] = [
     { title: 'Nome', id: 'nome', type: 'text'},
     { title: 'Email', id:'email', type: 'text'},
+    { title: 'Senha', id:'senha', type: 'text'},
     { title: 'Descrição', id: 'descricao', type: 'text'},
     { title: 'Cep', id: 'cep', type: 'text'},
     { title: 'Estado', id: 'estado', type: 'text'},
@@ -22,11 +29,10 @@ const empresaInputs: Input[] = [
     {title: 'Cnpj', id: 'cnpj', type: 'text'},
 ]
 
-const form = document.getElementById('registration-form')!;
-const toggleUserTypeCheckbox = <HTMLInputElement> document.getElementById("toggle-user-type-checkbox")!;
-const toggleUserTypeLabel = document.getElementById("toggle-user-type-label")!;
-const pageTitle = document.getElementById("page-title")!;
-
+const form = <HTMLFormElement> document.getElementById('registration-form')!;
+const toggleUserTypeCheckbox = <HTMLInputElement> document.getElementById("toggle-user-type-checkbox");
+const toggleUserTypeLabel = <HTMLInputElement> document.getElementById("toggle-user-type-label");
+const pageTitle = <HTMLTitleElement> document.getElementById("page-title");
 
 const toggleForm = () => {
     const isEmpresa = toggleUserTypeCheckbox.checked;
@@ -46,23 +52,18 @@ const toggleForm = () => {
     buildRegistrationForm();
 }
 
-
 const textInputBuilder = (input: Input): string => {
     return `
     <div class="form-section mb-3">
         <label for=${input.id} class="form-label">${input.title}</label>
-        <input type=${input.type} id=${input.id} name=${input.id} class="form-control" required>
+        <input type=${input.type} id=${input.id} name=${input.id} class="form-control" >
     </div>
    `
 };
 
 const buildRegistrationForm = () => {
-    const inputContainer = document.getElementById("inputs-container");
+    const inputContainer = <HTMLDivElement> document.getElementById("inputs-container");
     const registrationType = form.getAttribute("data-registration-type")
-
-    if (!inputContainer) {
-        return
-    }
 
     inputContainer.innerHTML = '';
 
@@ -81,9 +82,43 @@ const buildRegistrationForm = () => {
     }
 }
 
+const submitRegistration = (event: SubmitEvent) => {
+    event.preventDefault();
+
+    const data = new FormData(form);
+
+    const usuario: Usuario = {
+        id: 0,
+        nome: <string> data.get('nome'),
+        senha: <string> data.get('senha'),
+        competencias: [],
+        descricao: <string> data.get('descricao'),
+        email: <string> data.get('email'),
+        endereco: <Endereco> {id: 0, cep: "88063074", estado: "SC", pais: "Brasil"}
+    }
+
+    if (form.getAttribute('data-registration-type') === 'empresa') {
+        const empresa: Empresa = {
+            ...usuario,
+            cnpj: <string> data.get('cnpj')
+        }
+
+        registerUser(empresa, "empresa");
+    } else {
+        const candidato: Candidato = {
+            ...usuario,
+            cpf: <string> data.get('cpf'),
+            idade: Number(data.get('idade'))
+        }
+
+        registerUser(candidato, "candidato");
+    }
+
+}
+
 const addRegistrationFormEventListeners = () => {
-    const toggleUserTypeCheckbox = <HTMLInputElement> document.getElementById("toggle-user-type-checkbox")!;
     toggleUserTypeCheckbox.addEventListener('change', toggleForm);
+    form.addEventListener('submit', submitRegistration);
 }
 
 export { buildRegistrationForm, addRegistrationFormEventListeners }

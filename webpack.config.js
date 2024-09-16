@@ -6,7 +6,8 @@ module.exports = {
     mode: 'production',
     entry: {
         index: './src/main.ts',
-        registration: './src/components/registration.ts',
+        login: './src/components/login/login-form.ts',
+        registration: './src/components/registration/registration.ts',
     },
     output: {
         filename: '[name].min.js', // Output filenames based on entry names
@@ -16,7 +17,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './public/index.html',
-            chunks: ['index'],
+            chunks: ['login'],
             filename: 'index.html',
             minify: false
         }),
@@ -24,6 +25,12 @@ module.exports = {
             template: './public/registration.html',
             chunks: ['registration'],
             filename: 'registration.html',
+            minify: false
+        }),
+        new HtmlWebpackPlugin({
+            template: './public/dashboard.html',
+            chunks: [''],
+            filename: 'dashboard.html',
             minify: false
         }),
         new CopyPlugin({

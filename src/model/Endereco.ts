@@ -1,5 +1,6 @@
 export default interface Endereco {
-    pais: string;
+    id?: number;
     estado: string;
     cep: string;
+    pais: string;
 }
