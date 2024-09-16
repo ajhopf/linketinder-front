@@ -4,12 +4,15 @@ import Endereco from "../../model/Endereco";
 import Empresa from "../../model/Empresa";
 import Candidato from "../../model/Candidato";
 import {EmailInUseError} from "../../errors/email-in-use-error";
+import {searchCep} from "../../utils/cep";
 
 interface Input {
     title: string;
     id: string;
     type: string;
-    error?: string
+    error?: string;
+    maxlength?: string;
+    readonly?: boolean;
 }
 
 const defaultInputs: Input[] = [
@@ -17,9 +20,15 @@ const defaultInputs: Input[] = [
     { title: 'Email', id:'email', type: 'text', error: 'Email já está em uso'},
     { title: 'Senha', id:'senha', type: 'text'},
     { title: 'Descrição', id: 'descricao', type: 'text'},
-    { title: 'Cep', id: 'cep', type: 'text'},
-    { title: 'Estado', id: 'estado', type: 'text'},
-    { title: 'Pais', id: 'pais', type: 'text'},
+    {
+        title: 'Cep',
+        id: 'cep',
+        type: 'text',
+        maxlength: '9',
+        error: 'Cep inválido'
+    },
+    { title: 'Estado', id: 'estado', type: 'text', readonly: true },
+    { title: 'Pais', id: 'pais', type: 'text', readonly: true },
 ];
 
 const candidatoInputs: Input[] = [
@@ -58,7 +67,14 @@ const textInputBuilder = (input: Input): string => {
     return `
     <div class="form-section mb-3">
         <label for=${input.id} class="form-label">${input.title}</label>
-        <input type=${input.type} id=${input.id} name=${input.id} class="form-control" >
+        <input 
+        type=${input.type} 
+        id=${input.id} 
+        name=${input.id} 
+        class="form-control" 
+        ${input.maxlength && 'maxlength='+input.maxlength }
+        ${input.readonly && 'disabled'}
+        >
         <div class="d-flex justify-content-center my-3">
            <small hidden id="${input.id}-error-message" class="text-danger text-center">${input.error}</small>
         </div>
@@ -134,12 +150,30 @@ const submitRegistration = (event: SubmitEvent) => {
             emailError.removeAttribute('hidden')
         }
     }
-
 }
+
+const handleCepBlur = async () => {
+    const cepInput = <HTMLInputElement> document.getElementById('cep');
+    const estadoInput = <HTMLInputElement> document.getElementById('estado');
+    const paisInput = <HTMLInputElement> document.getElementById('pais');
+    const cepError = <HTMLElement> document.getElementById('cep-error-message');
+
+    try {
+        await searchCep(cepInput, estadoInput, paisInput)
+        if (!cepError.hasAttribute('hidden')) {
+            cepError.setAttribute('hidden', 'true');
+        }
+    } catch (e) {
+        cepError.removeAttribute('hidden')
+    }
+}
+
 
 const addRegistrationFormEventListeners = () => {
     toggleUserTypeCheckbox.addEventListener('change', toggleForm);
     form.addEventListener('submit', submitRegistration);
+    const cepInput = <HTMLInputElement> document.getElementById('cep');
+    cepInput.addEventListener('blur', handleCepBlur)
 }
 
 export { buildRegistrationForm, addRegistrationFormEventListeners }
