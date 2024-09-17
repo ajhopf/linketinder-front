@@ -24,6 +24,7 @@ const submitLoginForm = (e: SubmitEvent) => {
 
     try {
         loginUser(email, password, type);
+        window.location.assign('dashboard.html');
     } catch (error) {
         formErrorMessage.removeAttribute('hidden')
         console.log(error);

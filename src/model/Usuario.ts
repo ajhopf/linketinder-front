@@ -1,7 +1,7 @@
 import Endereco from "./Endereco";
 import Competencia from "./Competencia";
 
-export default interface Usuario {
+export interface Usuario {
     id: number;
     nome: string;
     senha: string;
@@ -9,5 +9,9 @@ export default interface Usuario {
     descricao: string;
     endereco: Endereco;
     competencias: Competencia[];
-
 }
+
+export interface UsuarioLogado extends Usuario {
+    type: 'empresas' | 'candidatos'
+}
+

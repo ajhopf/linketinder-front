@@ -1,11 +1,21 @@
-import Usuario from "../model/Usuario";
+import {Usuario, UsuarioLogado} from "../model/Usuario";
 import Empresa from "../model/Empresa";
 import Candidato from "../model/Candidato";
 import {comparePassword, hashPassword} from "../utils/bcrypt";
 import {WrongCredentialsError} from "../errors/wrong-credentials-error";
 import {EmailInUseError} from "../errors/email-in-use-error";
 
-const loginUser = (userEmail: string, userPassword: string, type: 'empresas' | 'candidatos') => {
+const getCurrentUser = (): UsuarioLogado => {
+    const userString = localStorage.getItem('loggedUser');
+
+    if (userString) {
+        return <UsuarioLogado> JSON.parse(userString);
+    } else {
+        throw new Error('User not found')
+    }
+}
+
+const loginUser = (userEmail: string, userPassword: string, type: 'empresas' | 'candidatos'): UsuarioLogado => {
     const usersArrayString = localStorage.getItem(type);
 
     if (usersArrayString) {
@@ -17,14 +27,17 @@ const loginUser = (userEmail: string, userPassword: string, type: 'empresas' | '
             const isPasswordCorrect = comparePassword(userPassword, user.senha);
 
             if (isPasswordCorrect) {
-               localStorage.setItem('loggedUser', JSON.stringify(user));
-               window.location.assign('dashboard.html');
+                const loggedUserInformation: UsuarioLogado = {type: type ,...user}
+                localStorage.setItem('loggedUser', JSON.stringify(loggedUserInformation));
+                return loggedUserInformation;
             } else {
                 throw new WrongCredentialsError('Senha incorreta')
             }
         } else {
             throw new WrongCredentialsError('Usuário não encontrado')
         }
+    } else {
+        throw new WrongCredentialsError('Usuário não encontrado')
     }
 }
 
@@ -63,4 +76,4 @@ const insertNewItem = <T extends Usuario>(newUser: T, localStorageKey: 'empresas
     return newUser;
 }
 
-export { loginUser, registerUser }
+export { loginUser, registerUser, getCurrentUser }

@@ -8,6 +8,7 @@ module.exports = {
         index: './src/main.ts',
         login: './src/components/login/login-form.ts',
         registration: './src/components/registration/registration.ts',
+        dashboard: './src/components/dashboard/dashboard.ts',
     },
     output: {
         filename: '[name].min.js', // Output filenames based on entry names
@@ -29,7 +30,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             template: './public/dashboard.html',
-            chunks: [''],
+            chunks: ['dashboard'],
             filename: 'dashboard.html',
             minify: false
         }),

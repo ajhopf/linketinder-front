@@ -1,5 +1,5 @@
 import {loginUser, registerUser} from "../../service/user-service";
-import Usuario from "../../model/Usuario";
+import {Usuario} from "../../model/Usuario";
 import Endereco from "../../model/Endereco";
 import Empresa from "../../model/Empresa";
 import Candidato from "../../model/Candidato";
@@ -143,28 +143,33 @@ const buildRegistrationForm = () => {
     addEventListenersToRenderedInputs();
 }
 
+const checkFormErrors = (registrationType: 'empresas' | 'candidatos') => {
+    let key: keyof ValidationErrors
+
+    for (key in validationErrors) {
+        if (validationErrors[key]) {
+            if (registrationType === 'empresas' && key === 'cpf') {
+                break;
+            } else if (registrationType === 'candidatos' && key === 'cnpj') {
+                break;
+            } else {
+                throw new FormInvalidError(`Formulário inválido. Campo: ${key}`)
+            }
+        }
+    }
+
+    if (userCompetencias.length === 0) {
+        throw new FormInvalidError('Adicione ao menos uma competência')
+    }
+}
+
 const submitRegistration = (event: SubmitEvent) => {
     event.preventDefault();
 
     try {
-        const registrationType = <'empresas' | 'candidatos'> form.getAttribute('data-registration-type')
-        let key: keyof ValidationErrors
+        const registrationType = <'empresas' | 'candidatos'> form.getAttribute('data-registration-type');
 
-        for (key in validationErrors) {
-            if (validationErrors[key]) {
-                if (registrationType === 'empresas' && key === 'cpf') {
-                    break;
-                } else if (registrationType === 'candidatos' && key === 'cnpj') {
-                    break;
-                } else {
-                    throw new FormInvalidError('Formulário inválido')
-                }
-            }
-        }
-
-        if (userCompetencias.length === 0) {
-            throw new FormInvalidError('Adicione ao menos uma competência')
-        }
+        checkFormErrors(registrationType);
 
         const data = new FormData(form);
 
@@ -199,7 +204,8 @@ const submitRegistration = (event: SubmitEvent) => {
             registerUser(candidato, "candidato");
         }
 
-        loginUser(usuario.email, usuario.senha, registrationType)
+        loginUser(usuario.email, usuario.senha, registrationType);
+        window.location.assign('/dashboard.html');
 
     } catch (e) {
         if (e instanceof EmailInUseError) {
