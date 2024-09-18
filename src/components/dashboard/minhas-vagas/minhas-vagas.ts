@@ -1,6 +1,6 @@
 import {getCurrentUser} from "../../../service/user-service";
 import {UsuarioLogado} from "../../../model/Usuario";
-import {getVagasDaEmpresa, removeVaga} from "../../../service/vagas-service";
+import {getVagasDaEmpresa, deleteVaga} from "../../../service/vagas-service";
 import {Vaga} from "../../../model/Vaga";
 import Competencia from "../../../model/Competencia";
 
@@ -38,12 +38,14 @@ const addDeleteVagaClickHandlers = () => {
         const vagaId = deleteButton.id.split('-')[2];
 
         deleteButton.addEventListener('click', () => {
-            removeVaga(Number(deleteButton.id));
+            deleteVaga(Number(deleteButton.id));
             const vagaCard = <HTMLElement> document.getElementById(`vaga-card-${vagaId}`)
             vagaCard.remove();
         })
     }
 }
+
+
 
 const buildMinhasVagasComponent = () => {
     const currentUser: UsuarioLogado = getCurrentUser();
@@ -52,7 +54,7 @@ const buildMinhasVagasComponent = () => {
 
     return `
         <div>
-            <h1 class="text-center">Minhas Vagas</h1>
+            <h1 class="text-center my-5">Minhas Vagas</h1>
             <div class="row justify-content-center">
                 ${vagasDaEmpresa.map(vaga => buildVagaCard(vaga)).join('')}
             </div>

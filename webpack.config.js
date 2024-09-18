@@ -35,7 +35,7 @@ module.exports = {
             minify: false
         }),
         new CopyPlugin({
-            patterns: [{from: 'public/css', to:'css/'}]
+            patterns: [{from: 'public/css', to:'css/'}, {from: 'public/assets' , to: 'assets'}]
         })
     ],
     resolve: {

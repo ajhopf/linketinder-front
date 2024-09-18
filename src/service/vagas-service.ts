@@ -14,7 +14,7 @@ const getVagasDaEmpresa = (empresaId: number): Vaga[] => {
     return vagas;
 }
 
-const removeVaga = (vagaId: number) => {
+const deleteVaga = (vagaId: number) => {
     const vagasString = localStorage.getItem("vagas");
 
     if (vagasString) {
@@ -52,4 +52,4 @@ const createVaga = (newVaga: Vaga) => {
     return newVaga;
 }
 
-export {createVaga, getVagasDaEmpresa, removeVaga}
+export {createVaga, getVagasDaEmpresa, deleteVaga}

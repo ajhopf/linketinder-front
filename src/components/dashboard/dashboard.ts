@@ -6,6 +6,13 @@ import {
     addDeleteVagaClickHandlers,
     buildMinhasVagasComponent
 } from "./minhas-vagas/minhas-vagas";
+import {
+    buildCandidatosComponent
+} from "./candidatos/candidatos";
+import {
+    addCandidatosCardsEventListeners,
+} from "./candidatos/event-listeners";
+import {addCurtirCandidatoClickHandlers} from "./candidatos/handlers";
 
 let currentComponent: 'candidatos' | 'vagas' | 'criar-vaga' | 'perfil' = 'candidatos'
 
@@ -13,33 +20,30 @@ let currentComponent: 'candidatos' | 'vagas' | 'criar-vaga' | 'perfil' = 'candid
 const mainContainer = <HTMLDivElement> document.getElementById("main-container");
 
 //botoes
-const logoutUserBtn = <HTMLButtonElement> document.getElementById("logout-btn");
-const perfilBtn = <HTMLButtonElement> document.getElementById("perfil-btn");
-const criarVagasBtn = <HTMLButtonElement> document.getElementById("criar-vaga-btn");
+const candidatosBtn = <HTMLButtonElement> document.getElementById("candidatos-btn")
 const minhasVagasBtn = <HTMLButtonElement> document.getElementById("minhas-vagas-btn");
+const criarVagasBtn = <HTMLButtonElement> document.getElementById("criar-vaga-btn");
+const perfilBtn = <HTMLButtonElement> document.getElementById("perfil-btn");
+const logoutUserBtn = <HTMLButtonElement> document.getElementById("logout-btn");
 
 const checkCurrentComponent = () => {
     if (currentComponent === 'criar-vaga') {
         clearVagaForm();
     }
+
+    if (currentComponent === 'candidatos') {
+        // removeCandidatosCardsEventListeners();
+    }
 }
 
-logoutUserBtn.addEventListener('click', logoutUser);
-
-perfilBtn.addEventListener('click', () => {
+candidatosBtn.addEventListener('click', () => {
     checkCurrentComponent();
 
-    mainContainer.innerHTML = buildProfileForm();
-    currentComponent = 'perfil';
+    mainContainer.innerHTML = buildCandidatosComponent();
+    currentComponent = 'candidatos';
+    addCurtirCandidatoClickHandlers();
+    addCandidatosCardsEventListeners();
 });
-
-criarVagasBtn.addEventListener('click', () => {
-    checkCurrentComponent();
-
-    mainContainer.innerHTML = buildCriarVagaComponent();
-    currentComponent = 'criar-vaga';
-    addEventListeneresToVagaForm();
-})
 
 minhasVagasBtn.addEventListener('click', () => {
     checkCurrentComponent();
@@ -49,5 +53,26 @@ minhasVagasBtn.addEventListener('click', () => {
     currentComponent = 'vagas';
 })
 
+criarVagasBtn.addEventListener('click', () => {
+    checkCurrentComponent();
+
+    mainContainer.innerHTML = buildCriarVagaComponent();
+    currentComponent = 'criar-vaga';
+    addEventListeneresToVagaForm();
+})
+
+perfilBtn.addEventListener('click', () => {
+    checkCurrentComponent();
+
+    mainContainer.innerHTML = buildProfileForm();
+    currentComponent = 'perfil';
+});
+
+logoutUserBtn.addEventListener('click', logoutUser);
 
 checkLoggedUser();
+
+mainContainer.innerHTML = buildCandidatosComponent();
+currentComponent = 'candidatos';
+addCandidatosCardsEventListeners();
+addCurtirCandidatoClickHandlers();

@@ -1,0 +1,19 @@
+.hide-modal {
+    transform: translateX(-100%);
+    transition: transform .5s ease-in-out;
+}
+
+.show-modal {
+    position: fixed;
+    transform: translateX(0);
+    transition: transform .5s ease-in-out;
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
+.modal-card-container {
+    height: 50vh;
+    width: 50vw;
+}

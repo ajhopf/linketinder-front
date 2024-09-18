@@ -91,7 +91,7 @@ const textInputBuilder = (input: Input): string => {
    `
 };
 
-const competenciasInputBuilder = (): string => {
+const competenciasInputBuilder = (registrationType: 'empresas' | 'candidatos'): string => {
     return `
     <div class="d-flex flex-column col-5">
         <div>
@@ -101,6 +101,10 @@ const competenciasInputBuilder = (): string => {
         <div>
             <label for="experiencia-competencia" class="form-label">Anos de Experiência</label>
             <input type="number" step="0.5" id="experiencia-competencia" class="form-control mb-3">
+        </div>
+        <div>
+            <label>${registrationType === 'empresas' ? 'Importância para a Vaga (1 a 5)' : 'Nível de Afinidade (1 a 5)'}</label>
+            <input value="1" type="number" min="1" max="5" step="1" id="importancia-competencia" class="form-control mb-3">    
         </div>
        
         <button type="button" id="competencia-btn" class="btn btn-outline-primary">Adicionar Competencia</button>
@@ -118,7 +122,7 @@ const competenciasInputBuilder = (): string => {
 
 const buildRegistrationForm = () => {
     const inputContainer = <HTMLDivElement> document.getElementById("inputs-container");
-    const registrationType = form.getAttribute("data-registration-type")
+    const registrationType = <'empresas' | 'candidatos'> form.getAttribute("data-registration-type");
 
     removeEventListeners()
 
@@ -138,7 +142,7 @@ const buildRegistrationForm = () => {
         })
     }
 
-    inputContainer.innerHTML += competenciasInputBuilder();
+    inputContainer.innerHTML += competenciasInputBuilder(registrationType);
 
     addEventListenersToRenderedInputs();
 }

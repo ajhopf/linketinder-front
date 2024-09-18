@@ -88,6 +88,7 @@ const handleAddCompetencia = () => {
     const competenciaInput = <HTMLInputElement> document.getElementById('competencia');
     const competenciaExperiencia = <HTMLInputElement> document.getElementById('experiencia-competencia')
     const competenciasList = <HTMLUListElement> document.getElementById('competencias-list');
+    const importanciaCompetencia = <HTMLInputElement> document.getElementById('importancia-competencia')
 
     if (competenciaInput.value.length > 0 && Number(competenciaExperiencia.value) > 0) {
         if (userCompetencias.find(competencia => competencia.competencia === competenciaInput.value)) {
@@ -96,7 +97,8 @@ const handleAddCompetencia = () => {
 
         const newCompetencia: Competencia = {
             competencia: <string> competenciaInput.value,
-            anosExperencia: Number(competenciaExperiencia.value)
+            anosExperencia: Number(competenciaExperiencia.value),
+            importancia: Number(importanciaCompetencia.value)
         }
 
         userCompetencias.push(newCompetencia);
@@ -106,6 +108,8 @@ const handleAddCompetencia = () => {
                 <p class="mb-0">${competenciaInput.value}</p>
                 <p class="mb-0">|</p>
                 <p class="mb-0">${Number(competenciaExperiencia.value)} anos</p>
+                <p class="mb-0">|</p>
+                <p class="mb-0">Importância: ${Number(importanciaCompetencia.value)}</p>
             </li>`
 
         document.getElementById(competenciaInput.value)!.addEventListener('click', handleRemoveCompetencia)

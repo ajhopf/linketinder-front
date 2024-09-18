@@ -4,6 +4,7 @@ import Candidato from "../model/Candidato";
 import {comparePassword, hashPassword} from "../utils/bcrypt";
 import {WrongCredentialsError} from "../errors/wrong-credentials-error";
 import {EmailInUseError} from "../errors/email-in-use-error";
+import {UserNotFoundError} from "../errors/user-not-found-error";
 
 const getCurrentUser = (): UsuarioLogado => {
     const userString = localStorage.getItem('loggedUser');
@@ -14,6 +15,7 @@ const getCurrentUser = (): UsuarioLogado => {
         throw new Error('User not found')
     }
 }
+
 
 const loginUser = (userEmail: string, userPassword: string, type: 'empresas' | 'candidatos'): UsuarioLogado => {
     const usersArrayString = localStorage.getItem(type);
@@ -43,13 +45,43 @@ const loginUser = (userEmail: string, userPassword: string, type: 'empresas' | '
 
 const registerUser = (user: Usuario, type: 'empresa' | 'candidato'): Usuario => {
     if (type === 'candidato') {
-        return insertNewItem(user as Candidato, 'candidatos')
+        return insertNewUser(user as Candidato, 'candidatos')
     } else {
-        return insertNewItem(user as Empresa, 'empresas')
+        return insertNewUser(user as Empresa, 'empresas')
     }
 }
 
-const insertNewItem = <T extends Usuario>(newUser: T, localStorageKey: 'empresas' | 'candidatos'): T => {
+const getUserById = <T extends Usuario>(id:number, localStorageKey: 'empresas' | 'candidatos'): T => {
+    const usersString = localStorage.getItem(localStorageKey);
+    let users: T[] = [];
+
+    if (usersString) {
+        users = JSON.parse(usersString);
+
+        const user = users.find(user => user.id === id);
+
+        if (user) {
+            return user;
+        } else {
+            throw new UserNotFoundError('User not found')
+        }
+    } else {
+        throw new UserNotFoundError('User not found')
+    }
+}
+
+const getAllUsersByType =  <T extends Usuario>(localStorageKey: 'empresas' | 'candidatos'): T[] => {
+    const usersString = localStorage.getItem(localStorageKey);
+    let users: T[] = [];
+
+    if (usersString) {
+        users = JSON.parse(usersString);
+    }
+
+    return users;
+}
+
+const insertNewUser = <T extends Usuario>(newUser: T, localStorageKey: 'empresas' | 'candidatos'): T => {
     const currentUsersString = localStorage.getItem(localStorageKey);
     let nextId = 0;
     let users: T[] = []
@@ -76,4 +108,4 @@ const insertNewItem = <T extends Usuario>(newUser: T, localStorageKey: 'empresas
     return newUser;
 }
 
-export { loginUser, registerUser, getCurrentUser }
+export { loginUser, registerUser, getCurrentUser, getUserById, getAllUsersByType }

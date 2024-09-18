@@ -20,7 +20,7 @@ const buildVagaForm = () => {
             ${competenciasInputBuilder()}
           </div>
           <div class="d-flex justify-content-center mb-3">
-            <small hidden id="form-error-message" class="text-danger text-center">Credenciais inválidas, tente novamente.</small>
+            <small hidden id="form-error-message" class="text-danger text-center"></small>
           </div>
           <button type="submit" class="btn btn-primary w-100">Adicionar Vaga</button>
         </form>
@@ -37,7 +37,7 @@ const competenciasInputBuilder = (): string => {
         <div>
             <div>
                 <label for="experiencia-competencia" class="form-label">Anos de Experiência Exigido</label>
-                <input type="number" step="0.5" id="experiencia-competencia" class="form-control mb-3">
+                <input type="number" step="0.5" id="experiencia-competencia" class="form-control mb-3" >
             </div>
             <div>
                 <label>Importância para a Vaga (1 a 5)</label>
@@ -57,13 +57,25 @@ const competenciasInputBuilder = (): string => {
     `
 }
 
+const removeFormError = () => {
+    const formError = <HTMLElement> document.getElementById('form-error-message');
+
+    if (!formError.getAttribute('hidden')) {
+        formError.setAttribute('hidden', 'hidden')
+    }
+}
+
+const showFormError = (message: string) => {
+    const formError = <HTMLElement> document.getElementById('form-error-message');
+    formError.innerText = message;
+    formError.removeAttribute('hidden');
+}
+
 const clearVagaForm = () => {
     const form = <HTMLFormElement> document.getElementById('vaga-form');
     const competenciasList = <HTMLUListElement> document.getElementById('competencias-list')
 
     competenciasExigidasParaVaga.splice(0)
-
-    console.log(competenciasList)
 
     for (let child of competenciasList.children) {
         child.removeEventListener('click', handleRemoveCompetencia);
@@ -72,8 +84,7 @@ const clearVagaForm = () => {
 
     competenciasList.innerHTML = '';
 
-    console.log(competenciasList)
-
+    removeFormError();
     form.reset();
 }
 
@@ -83,12 +94,27 @@ const submitVaga = (event: SubmitEvent) => {
 
     const data = new FormData(form);
 
+    if (competenciasExigidasParaVaga.length === 0) {
+        showFormError("Adicione ao menos uma competência para a vaga.")
+        return;
+    }
+
     const vaga: Vaga = {
         id: 0,
         titulo: <string> data.get('titulo'),
         descricao: <string> data.get('descricao'),
         competencias: competenciasExigidasParaVaga,
         empresaId: JSON.parse(localStorage.getItem('loggedUser')!).id
+    }
+
+    if (vaga.descricao.trim().length === 0) {
+        showFormError("Adicione um título para a vaga.");
+        return;
+    }
+
+    if (vaga.titulo.trim().length === 0) {
+        showFormError("A vaga deve ter uma descrição.");
+        return;
     }
 
     createVaga(vaga);
