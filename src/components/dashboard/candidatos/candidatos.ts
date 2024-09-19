@@ -56,7 +56,6 @@ const buildCandidatosComponent = () => {
 
     try {
         updateLocalCurtidas();
-
         return `
         <div>
             ${buildChartComponent()}
