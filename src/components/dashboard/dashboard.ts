@@ -1,4 +1,4 @@
-import {logoutUser} from "./authentication";
+import {checkLoggedUser, logoutUser} from "./authentication";
 import {buildProfileForm} from "./profile/profile";
 import {buildCriarVagaComponent} from "./criar-vaga/criar-vaga";
 import {addEventListeneresToVagaForm, clearVagaForm} from "./criar-vaga/new-vaga-form";
@@ -14,6 +14,8 @@ import {
 } from "./candidatos/event-listeners";
 import {addCurtirCandidatoClickHandlers} from "./candidatos/handlers";
 import {addChart} from "./candidatos/chart";
+
+checkLoggedUser();
 
 let currentComponent: 'candidatos' | 'vagas' | 'criar-vaga' | 'perfil' = 'candidatos'
 
@@ -73,5 +75,7 @@ perfilBtn.addEventListener('click', () => {
 });
 
 logoutUserBtn.addEventListener('click', logoutUser);
+
+
 
 renderCandidatosComponent();

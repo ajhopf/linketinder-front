@@ -28,7 +28,7 @@ const buildCandidatoSimpleCard = (candidato: Candidato) => {
     const liked = candidatosCurtidos.findIndex(item => item.candidatoId === Number(candidato.id)) >= 0;
 
     return `
-        <div class="card m-3 col-10 col-md-5 p-0 candidato-card" id="vaga-card-${candidato.id}">
+        <div class="card m-3 col-10 col-md-4 p-0 candidato-card" id="vaga-card-${candidato.id}">
           <div class="card-header d-flex justify-content-between">
             <div>
                 <img alt="robot image" class="rounded" style="height: 5rem; width: 5rem" src="https://robohash.org/${candidato.descricao}" />
@@ -63,7 +63,7 @@ const buildCandidatosComponent = () => {
         </div>
         <div> 
             <h1 class="text-center my-5">Candidatos</h1>
-            <div>
+            <div class="row justify-content-center">
                 ${candidatos.map(candidato => buildCandidatoSimpleCard(candidato)).join('')}
             </div>
            

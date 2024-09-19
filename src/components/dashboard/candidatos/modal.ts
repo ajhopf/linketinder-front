@@ -18,7 +18,6 @@ const buildCandidatoModalCard = (candidato: Candidato) => {
     const liked = candidatosCurtidos.findIndex(item => item.candidatoId === Number(candidato.id)) >= 0;
 
     return `
-
           <div class="card-header d-flex justify-content-between">
             <div>
                 <img alt="robot image" class="rounded" style="height: 5rem; width: 5rem" src="https://robohash.org/${candidato.descricao}" />

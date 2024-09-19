@@ -8,16 +8,22 @@
         <link href="css/candidatos.css" rel="stylesheet">
     </head>
     <body id="dashboard-body">
+        <script>
+            import {checkLoggedUser} from "../src/components/dashboard/authentication";
+
+            checkLoggedUser();
+        </script>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid justify-content-between">
-                <a class="navbar-brand" href="#">Linketinder</a>
-                <div class="d-flex align-items-center">
+            <div class="container-fluid row">
+                <a class="navbar-brand col-4" href="#">Linketinder</a>
+                <div class="d-flex col-4 justify-content-center  align-items-center">
                     <p class="mb-0" id="nav-hello">Olá André!</p>
                 </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
+
+                <div class="col-4 flex-grow-0 justify-content-end collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item">
                             <button class="nav-link btn" id="candidatos-btn" aria-current="page" href="#">Candidatos</button>
@@ -36,6 +42,7 @@
                         </li>
                     </ul>
                 </div>
+
             </div>
         </nav>
         <main id="main-container" class="container">
