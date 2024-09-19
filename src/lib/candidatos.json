@@ -1,0 +1,293 @@
+{
+  "candidatos": [
+    {
+      "id": 0,
+      "nome": "André Jaques Hopf",
+      "senha": "$2a$10$yWeg4hNecI6UjFMva4qDteAwzRDH/jM7MIrA9YQptpw4Koku0Qwb2",
+      "competencias": [
+        {
+          "competencia": "Java",
+          "anosExperiencia": 2,
+          "importancia": 4
+        },
+        {
+          "competencia": "TypeScript",
+          "anosExperiencia": 2,
+          "importancia": 5
+        },
+        {
+          "competencia": "JavaScript",
+          "anosExperiencia": 2.5,
+          "importancia": 5
+        },
+        {
+          "competencia": "React",
+          "anosExperiencia": 1,
+          "importancia": 3
+        },
+        {
+          "competencia": "Groovy",
+          "anosExperiencia": 0.5,
+          "importancia": 4
+        }
+      ],
+      "descricao": "Dev Full Stack",
+      "email": "andre.hopf@gmail.com",
+      "endereco": {
+        "cep": "88063-074",
+        "estado": null,
+        "pais": null
+      },
+      "cpf": "022.567.470-00",
+      "idade": 32
+    },
+    {
+      "id": 1,
+      "nome": "Maria Silva Santos",
+      "senha": "$2a$10$senha_segura_aleatoria_2",
+      "competencias": [
+        {
+          "competencia": "Python",
+          "anosExperiencia": 3,
+          "importancia": 4
+        },
+        {
+          "competencia": "Django",
+          "anosExperiencia": 2.5,
+          "importancia": 5
+        },
+        {
+          "competencia": "SQL",
+          "anosExperiencia": 4,
+          "importancia": 3
+        }
+      ],
+      "descricao": "Desenvolvedora Back-End",
+      "email": "maria.silva@example.com",
+      "endereco": {
+        "cep": "12345-678",
+        "estado": "São Paulo",
+        "pais": "Brasil"
+      },
+      "cpf": "333.444.555-66",
+      "idade": 28
+    },
+    {
+      "id": 2,
+      "nome": "João Pereira Almeida",
+      "senha": "$2a$10$outra_senha_segura_aleatoria",
+      "competencias": [
+        {
+          "competencia": "JavaScript",
+          "anosExperiencia": 5,
+          "importancia": 5
+        },
+        {
+          "competencia": "React",
+          "anosExperiencia": 4,
+          "importancia": 4
+        },
+        {
+          "competencia": "Redux",
+          "anosExperiencia": 3,
+          "importancia": 3
+        }
+      ],
+      "descricao": "Desenvolvedor Front-End Sênior",
+      "email": "joao.almeida@example.com",
+      "endereco": {
+        "cep": "98765-432",
+        "estado": "Rio de Janeiro",
+        "pais": "Brasil"
+      },
+      "cpf": "777.888.999-00",
+      "idade": 35
+    },
+    {
+      "id": 3,
+      "nome": "Ana Clara Oliveira",
+      "senha": "$2a$10$mais_uma_senha_segura",
+      "competencias": [
+        {
+          "competencia": "Java",
+          "anosExperiencia": 3,
+          "importancia": 4
+        },
+        {
+          "competencia": "Spring Boot",
+          "anosExperiencia": 2,
+          "importancia": 5
+        },
+        {
+          "competencia": "Angular",
+          "anosExperiencia": 1.5,
+          "importancia": 3
+        }
+      ],
+      "descricao": "Desenvolvedora Full Stack Júnior",
+      "email": "ana.oliveira@example.com",
+      "endereco": {
+        "cep": "54321-098",
+        "estado": "Minas Gerais",
+        "pais": "Brasil"
+      },
+      "cpf": "111.222.333-44",
+      "idade": 25
+    },
+    {
+      "id": 4,
+      "nome": "Pedro Henrique Lima",
+      "senha": "$2a$10$outra_senha_segura_aqui",
+      "competencias": [
+        {
+          "competencia": "C#",
+          "anosExperiencia": 6,
+          "importancia": 5
+        },
+        {
+          "competencia": ".NET",
+          "anosExperiencia": 5,
+          "importancia": 4
+        },
+        {
+          "competencia": "SQL Server",
+          "anosExperiencia": 7,
+          "importancia": 3
+        }
+      ],
+      "descricao": "Desenvolvedor Back-End Sênior",
+      "email": "pedro.lima@example.com",
+      "endereco": {
+        "cep": "87654-321",
+        "estado": "Paraná",
+        "pais": "Brasil"
+      },
+      "cpf": "555.666.777-88",
+      "idade": 40
+    },
+    {
+      "id": 5,
+      "nome": "Laura Beatriz Ferreira",
+      "senha": "$2a$10$mais_uma_senha_forte",
+      "competencias": [
+        {
+          "competencia": "HTML",
+          "anosExperiencia": 3,
+          "importancia": 3
+        },
+        {
+          "competencia": "CSS",
+          "anosExperiencia": 3,
+          "importancia": 3
+        },
+        {
+          "competencia": "JavaScript",
+          "anosExperiencia": 2,
+          "importancia": 4
+        }
+      ],
+      "descricao": "Desenvolvedora Front-End Júnior",
+      "email": "laura.ferreira@example.com",
+      "endereco": {
+        "cep": "24680-135",
+        "estado": "Bahia",
+        "pais": "Brasil"
+      },
+      "cpf": "999.000.111-22",
+      "idade": 23
+    },
+    {
+      "id": 6,
+      "nome": "Carlos Eduardo Costa",
+      "senha": "$2a$10$senha_segura_complexa",
+      "competencias": [
+        {
+          "competencia": "Python",
+          "anosExperiencia": 4,
+          "importancia": 4
+        },
+        {
+          "competencia": "Flask",
+          "anosExperiencia": 3,
+          "importancia": 5
+        },
+        {
+          "competencia": "AWS",
+          "anosExperiencia": 2,
+          "importancia": 3
+        }
+      ],
+      "descricao": "Desenvolvedor Back-End Pleno",
+      "email": "carlos.costa@example.com",
+      "endereco": {
+        "cep": "13579-246",
+        "estado": "Pernambuco",
+        "pais": "Brasil"
+      },
+      "cpf": "321.654.987-00",
+      "idade": 30
+    },
+    {
+      "id": 8,
+      "nome": "Fernando Augusto Silva",
+      "senha": "$2a$10$senha_complexa_segura",
+      "competencias": [
+        {
+          "competencia": "JavaScript",
+          "anosExperiencia": 4,
+          "importancia": 4
+        },
+        {
+          "competencia": "Node.js",
+          "anosExperiencia": 3.5,
+          "importancia": 5
+        },
+        {
+          "competencia": "MongoDB",
+          "anosExperiencia": 2,
+          "importancia": 3
+        }
+      ],
+      "descricao": "Desenvolvedor Back-End Pleno",
+      "email": "fernando.silva@example.com",
+      "endereco": {
+        "cep": "75319-064",
+        "estado": "Goiás",
+        "pais": "Brasil"
+      },
+      "cpf": "456.789.123-01",
+      "idade": 29
+    },
+    {
+      "id": 9,
+      "nome": "Juliana Gabriela Santos",
+      "senha": "$2a$10$mais_uma_senha_segura_forte",
+      "competencias": [
+        {
+          "competencia": "React Native",
+          "anosExperiencia": 2,
+          "importancia": 4
+        },
+        {
+          "competencia": "Flutter",
+          "anosExperiencia": 1.5,
+          "importancia": 3
+        },
+        {
+          "competencia": "Dart",
+          "anosExperiencia": 1,
+          "importancia": 2
+        }
+      ],
+      "descricao": "Desenvolvedora Mobile Júnior",
+      "email": "juliana.santos@example.com",
+      "endereco": {
+        "cep": "68423-570",
+        "estado": "Pará",
+        "pais": "Brasil"
+      },
+      "cpf": "789.456.123-03",
+      "idade": 24
+    }
+  ]
+}
