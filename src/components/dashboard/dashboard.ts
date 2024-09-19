@@ -1,4 +1,4 @@
-import {checkLoggedUser, logoutUser} from "./authentication";
+import {logoutUser} from "./authentication";
 import {buildProfileForm} from "./profile/profile";
 import {buildCriarVagaComponent} from "./criar-vaga/criar-vaga";
 import {addEventListeneresToVagaForm, clearVagaForm} from "./criar-vaga/new-vaga-form";
@@ -13,6 +13,7 @@ import {
     addCandidatosCardsEventListeners,
 } from "./candidatos/event-listeners";
 import {addCurtirCandidatoClickHandlers} from "./candidatos/handlers";
+import {addChart} from "./candidatos/chart";
 
 let currentComponent: 'candidatos' | 'vagas' | 'criar-vaga' | 'perfil' = 'candidatos'
 
@@ -26,6 +27,16 @@ const criarVagasBtn = <HTMLButtonElement> document.getElementById("criar-vaga-bt
 const perfilBtn = <HTMLButtonElement> document.getElementById("perfil-btn");
 const logoutUserBtn = <HTMLButtonElement> document.getElementById("logout-btn");
 
+const renderCandidatosComponent = async () => {
+    checkCurrentComponent();
+
+    mainContainer.innerHTML = buildCandidatosComponent();
+    currentComponent = 'candidatos';
+    await addChart();
+    addCurtirCandidatoClickHandlers();
+    addCandidatosCardsEventListeners();
+}
+
 const checkCurrentComponent = () => {
     if (currentComponent === 'criar-vaga') {
         clearVagaForm();
@@ -36,14 +47,7 @@ const checkCurrentComponent = () => {
     }
 }
 
-candidatosBtn.addEventListener('click', () => {
-    checkCurrentComponent();
-
-    mainContainer.innerHTML = buildCandidatosComponent();
-    currentComponent = 'candidatos';
-    addCurtirCandidatoClickHandlers();
-    addCandidatosCardsEventListeners();
-});
+candidatosBtn.addEventListener('click', renderCandidatosComponent);
 
 minhasVagasBtn.addEventListener('click', () => {
     checkCurrentComponent();
@@ -70,9 +74,4 @@ perfilBtn.addEventListener('click', () => {
 
 logoutUserBtn.addEventListener('click', logoutUser);
 
-checkLoggedUser();
-
-mainContainer.innerHTML = buildCandidatosComponent();
-currentComponent = 'candidatos';
-addCandidatosCardsEventListeners();
-addCurtirCandidatoClickHandlers();
+renderCandidatosComponent();

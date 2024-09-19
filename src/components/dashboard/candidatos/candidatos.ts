@@ -6,6 +6,7 @@ import {
     getCurtidasDoCurrentUser,
 } from "../../../service/curtida-service";
 import Curtida from "../../../model/Curtida";
+import {buildChartComponent} from "./chart";
 
 let candidatosCurtidos: Curtida[] = [];
 
@@ -58,6 +59,9 @@ const buildCandidatosComponent = () => {
 
         return `
         <div>
+            ${buildChartComponent()}
+        </div>
+        <div> 
             <h1 class="text-center my-5">Candidatos</h1>
             <div>
                 ${candidatos.map(candidato => buildCandidatoSimpleCard(candidato)).join('')}

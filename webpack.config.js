@@ -20,19 +20,16 @@ module.exports = {
             template: './public/index.html',
             chunks: ['login'],
             filename: 'index.html',
-            minify: false
         }),
         new HtmlWebpackPlugin({
             template: './public/registration.html',
             chunks: ['registration'],
             filename: 'registration.html',
-            minify: false
         }),
         new HtmlWebpackPlugin({
             template: './public/dashboard.html',
             chunks: ['dashboard'],
             filename: 'dashboard.html',
-            minify: false
         }),
         new CopyPlugin({
             patterns: [{from: 'public/css', to:'css/'}, {from: 'public/assets' , to: 'assets'}]
@@ -54,5 +51,10 @@ module.exports = {
                 exclude: /node_modules/
             }
         ]
+    },
+    performance: {
+        hints: 'warning',
+        maxAssetSize: 512000,
+        maxEntrypointSize: 512000
     }
 }
