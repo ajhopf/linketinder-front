@@ -8,11 +8,6 @@
         <link href="css/candidatos.css" rel="stylesheet">
     </head>
     <body id="dashboard-body">
-        <script>
-            import {checkLoggedUser} from "../src/components/dashboard/authentication";
-
-            checkLoggedUser();
-        </script>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid row">
                 <a class="navbar-brand col-4" href="#">Linketinder</a>
@@ -25,14 +20,17 @@
 
                 <div class="col-4 flex-grow-0 justify-content-end collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mb-2 mb-lg-0">
-                        <li class="nav-item">
+                        <li class="nav-item empresa-nav-link">
                             <button class="nav-link btn" id="candidatos-btn" aria-current="page" href="#">Candidatos</button>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item empresa-nav-link">
                             <button class="nav-link btn" id="minhas-vagas-btn">Minhas Vagas</button>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item empresa-nav-link">
                             <button class="nav-link btn" id="criar-vaga-btn">Criar Vaga</button>
+                        </li>
+                        <li class="nav-item candidato-nav-link">
+                            <button class="nav-link btn" id="vagas-disponiveis-btn">Vagas Disponíveis</button>
                         </li>
                         <li class="nav-item">
                             <button class="nav-link btn" id="perfil-btn">Meu perfil</button>

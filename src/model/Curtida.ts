@@ -1,5 +1,14 @@
-export default interface Curtida {
+interface Curtida {
     id: number;
-    empresaId: number;
     candidatoId: number;
 }
+
+interface CurtidaEmCandidato extends Curtida {
+    empresaId: number;
+}
+
+interface CurtidaEmVaga extends Curtida {
+    vagaId: number;
+}
+
+export { CurtidaEmCandidato, CurtidaEmVaga, Curtida }

@@ -1,6 +1,7 @@
 import {BarController, BarElement, CategoryScale, Chart, LinearScale, Tooltip} from "chart.js";
-import {getAllUsersByType} from "../../../service/user-service";
-import Candidato from "../../../model/Candidato";
+
+import Candidato from "../../model/Candidato";
+import {Vaga} from "../../model/Vaga";
 
 Chart.register(
     BarController,
@@ -10,10 +11,10 @@ Chart.register(
     Tooltip
 )
 
-const buildChartComponent = () => {
+const buildChartComponent = (title: string) => {
     return `
         <div class="d-flex flex-column align-items-center justify-content-center">
-            <h1>Candidatos por Competência</h1>
+            <h1>${title}</h1>
             <div style="width: 800px;">
                 <canvas id="acquisitions"></canvas>
             </div>
@@ -33,12 +34,14 @@ const colorsHover = ['rgb(255, 99, 132)',
     'rgb(75, 192, 192)',
     'rgb(54, 162, 235)',]
 
-const addChart = async () => {
-    const users = <Candidato[]> getAllUsersByType('candidatos');
+const addChart = async (items: Candidato[] | Vaga[], tooltipLabel: string) => {
+
+
+
     const categorias: {categoria: string, contagem: number}[] = [];
 
-    users.forEach(user => {
-        user.competencias.forEach(competencia => {
+    items.forEach(item => {
+        item.competencias.forEach(competencia => {
             const idx = categorias.findIndex(item => item.categoria.toLowerCase() === competencia.competencia.toLowerCase())
 
             if (idx >= 0) {
@@ -48,8 +51,8 @@ const addChart = async () => {
             }
         })
     })
-    const canvas = <HTMLCanvasElement> document.getElementById('acquisitions')
 
+    const canvas = <HTMLCanvasElement> document.getElementById('acquisitions')
 
     new Chart(canvas,
         {
@@ -58,7 +61,7 @@ const addChart = async () => {
                 labels: categorias.map(categoria => categoria.categoria),
                 datasets: [
                     {
-                        label: 'Número de candidatos: ',
+                        label: tooltipLabel,
                         data: categorias.map(categoria => categoria.contagem),
                         backgroundColor: colors,
                         hoverBackgroundColor: colorsHover

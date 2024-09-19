@@ -1,6 +1,6 @@
 import {competenciasExigidasParaVaga, handleAddCompetencia, handleRemoveCompetencia} from "./input-handlers";
-import {Vaga} from "../../../model/Vaga";
-import {createVaga} from "../../../service/vagas-service";
+import {Vaga} from "../../../../model/Vaga";
+import {createVaga} from "../../../../service/vagas-service";
 
 const buildVagaForm = () => {
     return `

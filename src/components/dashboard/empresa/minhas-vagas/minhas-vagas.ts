@@ -1,8 +1,8 @@
-import {getCurrentUser} from "../../../service/user-service";
-import {UsuarioLogado} from "../../../model/Usuario";
-import {getVagasDaEmpresa, deleteVaga} from "../../../service/vagas-service";
-import {Vaga} from "../../../model/Vaga";
-import Competencia from "../../../model/Competencia";
+import {getCurrentUser} from "../../../../service/user-service";
+import {UsuarioLogado} from "../../../../model/Usuario";
+import {getVagasDaEmpresa, deleteVaga} from "../../../../service/vagas-service";
+import {Vaga} from "../../../../model/Vaga";
+import Competencia from "../../../../model/Competencia";
 
 
 const buildCompetenciaDiv = (competencia: Competencia) => {
@@ -47,7 +47,7 @@ const addDeleteVagaClickHandlers = () => {
 
 
 
-const buildMinhasVagasComponent = () => {
+const buildMinhasVagasInnerContent = () => {
     const currentUser: UsuarioLogado = getCurrentUser();
 
     const vagasDaEmpresa: Vaga[] = getVagasDaEmpresa(currentUser.id);
@@ -60,6 +60,13 @@ const buildMinhasVagasComponent = () => {
             </div>
         </div>
     `
+}
+
+const buildMinhasVagasComponent = () => {
+    const mainContainer = <HTMLDivElement> document.getElementById('main-container');
+
+    mainContainer.innerHTML = buildMinhasVagasInnerContent();
+    addDeleteVagaClickHandlers();
 }
 
 export {buildMinhasVagasComponent, addDeleteVagaClickHandlers}

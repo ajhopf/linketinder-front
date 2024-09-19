@@ -1,9 +1,9 @@
-import Curtida from "../model/Curtida";
+import {Curtida, CurtidaEmCandidato, CurtidaEmVaga} from "../model/Curtida";
 import {UsuarioLogado} from "../model/Usuario";
 import {CurtidaNotFoundError} from "../errors/curtida-not-found-error";
 
 const getCurtidasDoCurrentUser = (currentLoggedUser: UsuarioLogado) => {
-    let storageKey = 'empresasCurtida';
+    let storageKey = 'vagasCurtida';
 
     if (currentLoggedUser.type === 'empresas') {
         storageKey = 'candidatosCurtida';
@@ -14,11 +14,11 @@ const getCurtidasDoCurrentUser = (currentLoggedUser: UsuarioLogado) => {
     let curtidasDoUsuario: Curtida[] = [];
 
     if (allCurtidasString) {
-        const curtidas: Curtida[] = JSON.parse(allCurtidasString);
-
         if (currentLoggedUser.type === 'empresas') {
+            const curtidas: CurtidaEmCandidato[] = JSON.parse(allCurtidasString);
             curtidasDoUsuario = curtidas.filter(curtida => curtida.empresaId === currentLoggedUser.id)
         } else {
+            const curtidas: CurtidaEmVaga[] = JSON.parse(allCurtidasString);
             curtidasDoUsuario = curtidas.filter(curtida => curtida.candidatoId === currentLoggedUser.id)
         }
     }
@@ -26,13 +26,15 @@ const getCurtidasDoCurrentUser = (currentLoggedUser: UsuarioLogado) => {
     return curtidasDoUsuario;
 }
 
-const addCurtidaACandidato = (newCurtida: Curtida) => {
-    const candidatosCurtidasString = localStorage.getItem("candidatosCurtida");
+
+const addCurtida = <T extends Curtida> (newCurtida: T, storageKey: 'candidatosCurtida' | 'vagasCurtida') => {
+    const curtidasString = localStorage.getItem(storageKey);
+
     let nextId = 0;
     let curtidas: Curtida[] = [];
 
-    if (candidatosCurtidasString) {
-        curtidas = <Curtida[]> JSON.parse(candidatosCurtidasString);
+    if (curtidasString) {
+        curtidas = <Curtida[]> JSON.parse(curtidasString);
 
         curtidas.forEach(curtida => {
             if (curtida.id >= nextId) {
@@ -43,14 +45,33 @@ const addCurtidaACandidato = (newCurtida: Curtida) => {
 
     newCurtida.id = nextId;
     const curtidasUpdated: Curtida[] = [...curtidas, newCurtida];
-    localStorage.setItem('candidatosCurtida', JSON.stringify(curtidasUpdated));
+    localStorage.setItem(storageKey, JSON.stringify(curtidasUpdated));
 
     return newCurtida;
 }
 
+const removeCurtida = (curtidaId: number, storageKey: 'candidatosCurtida' | 'vagasCurtida') => {
+    const curtidasString = localStorage.getItem(storageKey);
+
+    if (curtidasString) {
+        const curtidas = <Curtida[]> JSON.parse(curtidasString);
+        const curtidaIdx = curtidas.findIndex(curtida => curtida.id === curtidaId)
+
+        if (curtidaIdx >= 0) {
+            curtidas.splice(curtidaIdx, 1);
+
+            localStorage.setItem(storageKey, JSON.stringify(curtidas));
+        } else {
+            throw new CurtidaNotFoundError('Curtida não encontrada');
+        }
+
+    } else {
+        throw new CurtidaNotFoundError('Curtida não encontrada');
+    }
+}
+
 const removeCurtidaDoCandidato = (curtidaId: number) => {
     const candidatosCurtidasString = localStorage.getItem("candidatosCurtida");
-    console.log('Curtidas string', candidatosCurtidasString);
 
     if (candidatosCurtidasString) {
         const curtidas = <Curtida[]> JSON.parse(candidatosCurtidasString);
@@ -70,4 +91,4 @@ const removeCurtidaDoCandidato = (curtidaId: number) => {
     }
 }
 
-export {addCurtidaACandidato, getCurtidasDoCurrentUser, removeCurtidaDoCandidato}
+export {addCurtida, removeCurtida, getCurtidasDoCurrentUser, removeCurtidaDoCandidato}

@@ -1,6 +1,6 @@
-import Candidato from "../../../model/Candidato";
+import Candidato from "../../../../model/Candidato";
 import {candidatosCurtidos} from "./candidatos";
-import Competencia from "../../../model/Competencia";
+import Competencia from "../../../../model/Competencia";
 
 const showCandidatoCompetencias = (competencias: Competencia[]) => {
     return competencias.map((competencia: Competencia) => {

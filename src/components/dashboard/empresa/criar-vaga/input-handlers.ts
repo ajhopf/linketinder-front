@@ -1,4 +1,4 @@
-import Competencia from "../../../model/Competencia";
+import Competencia from "../../../../model/Competencia";
 
 const competenciasExigidasParaVaga: Competencia[] = [];
 

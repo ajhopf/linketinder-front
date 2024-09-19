@@ -1,19 +1,22 @@
-import {getAllUsersByType, getCurrentUser} from "../../../service/user-service";
+import {getAllUsersByType, getCurrentUser} from "../../../../service/user-service";
 
-import Candidato from "../../../model/Candidato";
-import Competencia from "../../../model/Competencia";
-import {
-    getCurtidasDoCurrentUser,
-} from "../../../service/curtida-service";
-import Curtida from "../../../model/Curtida";
-import {buildChartComponent} from "./chart";
+import Candidato from "../../../../model/Candidato";
+import Competencia from "../../../../model/Competencia";
+import {getCurtidasDoCurrentUser} from "../../../../service/curtida-service";
+import {Curtida} from "../../../../model/Curtida";
+import {addChart, buildChartComponent} from "../../chart";
+import {addCandidatosCardsEventListeners} from "./event-listeners";
 
 let candidatosCurtidos: Curtida[] = [];
 
 const showCandidatoSimpleCompetencias = (competencias: Competencia[]) => {
     const competenciasSorted = competencias.sort((a, b) => b.importancia - a.importancia);
 
-    const principaisCompetencias = [competenciasSorted[0], competenciasSorted[1], competenciasSorted[2]];
+    const principaisCompetencias: Competencia[] = [];
+
+    for (let i = 0; i < competenciasSorted.length && i < 3; i++) {
+        principaisCompetencias.push(competenciasSorted[i]);
+    }
 
     return principaisCompetencias.map((competencia: Competencia) => {
         return `
@@ -51,14 +54,14 @@ const updateLocalCurtidas = () => {
     candidatosCurtidos = getCurtidasDoCurrentUser(getCurrentUser());
 }
 
-const buildCandidatosComponent = () => {
+const buildCandidatosInnerContent = () => {
     const candidatos = getAllUsersByType<Candidato>("candidatos");
 
     try {
         updateLocalCurtidas();
         return `
         <div>
-            ${buildChartComponent()}
+            ${buildChartComponent('Candidatos por Competência')}
         </div>
         <div> 
             <h1 class="text-center my-5">Candidatos</h1>
@@ -75,5 +78,14 @@ const buildCandidatosComponent = () => {
     }
 }
 
+const buildCandidatosComponent = async () => {
+    const mainContainer = <HTMLDivElement> document.getElementById('main-container');
+    mainContainer.innerHTML = buildCandidatosInnerContent();
+    const users = <Candidato[]> getAllUsersByType('candidatos');
+    await addChart(users, 'Candidatos por competência: ');
+    // addCurtirCandidatoClickHandlers();
+    addCandidatosCardsEventListeners();
+}
 
-export {buildCandidatosComponent, candidatosCurtidos, updateLocalCurtidas}
+
+export {buildCandidatosComponent, buildCandidatosInnerContent, candidatosCurtidos, updateLocalCurtidas}

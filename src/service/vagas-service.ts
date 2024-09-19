@@ -1,4 +1,36 @@
 import {Vaga} from "../model/Vaga";
+import {VagaNotFoundError} from "../errors/vaga-not-found-error";
+
+const getAllVagas = (): Vaga[] => {
+    const vagasString = localStorage.getItem("vagas");
+
+    let vagas: Vaga[] = [];
+
+    if (vagasString) {
+        vagas = <Vaga[]> JSON.parse(vagasString);
+    }
+
+    return vagas;
+}
+
+const getVagaById = (vagaId: number): Vaga => {
+    const vagasString = localStorage.getItem("vagas");
+
+    if (vagasString) {
+        const todasVagas = <Vaga[]> JSON.parse(vagasString);
+
+        const vaga = todasVagas.find(vaga => vaga.id === vagaId);
+
+        if (!vaga) {
+            throw new VagaNotFoundError('Vaga não encontrada')
+        }
+
+        return vaga;
+    } else {
+        throw new VagaNotFoundError('Vaga não encontrada')
+    }
+
+}
 
 const getVagasDaEmpresa = (empresaId: number): Vaga[] => {
     const vagasString = localStorage.getItem("vagas");
@@ -52,4 +84,4 @@ const createVaga = (newVaga: Vaga) => {
     return newVaga;
 }
 
-export {createVaga, getVagasDaEmpresa, deleteVaga}
+export {getAllVagas, getVagaById, createVaga, getVagasDaEmpresa, deleteVaga}

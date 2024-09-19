@@ -1,8 +1,8 @@
-import {addCurtidaACandidato, removeCurtidaDoCandidato} from "../../../service/curtida-service";
-import Curtida from "../../../model/Curtida";
-import {getCurrentUser, getUserById} from "../../../service/user-service";
+import {addCurtida, removeCurtida} from "../../../../service/curtida-service";
+import {CurtidaEmCandidato} from "../../../../model/Curtida";
+import {getCurrentUser, getUserById} from "../../../../service/user-service";
 import {candidatosCurtidos, updateLocalCurtidas} from "./candidatos";
-import Candidato from "../../../model/Candidato";
+import Candidato from "../../../../model/Candidato";
 import {buildCandidatoModalCard} from "./modal";
 
 const handleMouseOverCard = (event: MouseEvent) => {
@@ -45,15 +45,12 @@ const handleCurtidaClick = () => {
     const curtidaBtn = <HTMLButtonElement> document.getElementById('curtir-candidato')
     const candidatoId = curtidaBtn.getAttribute('data-candidato-id');
 
-    console.log(curtidaBtn)
-    console.log(candidatoId)
-
     if (candidatoId) {
         const curtidaIdx = candidatosCurtidos.findIndex(curtida => curtida.candidatoId === Number(candidatoId));
 
         if (curtidaIdx >= 0) {
             const curtidaId = candidatosCurtidos[curtidaIdx].id;
-            removeCurtidaDoCandidato(curtidaId)
+            removeCurtida(curtidaId, 'candidatosCurtida')
             const curtidaIcones = <HTMLCollectionOf<HTMLImageElement>> document.getElementsByClassName(`curtida-icone-${candidatoId}`)
 
             for (let i = 0; i < curtidaIcones.length; i++) {
@@ -62,12 +59,12 @@ const handleCurtidaClick = () => {
 
             updateLocalCurtidas()
         } else {
-            const curtida: Curtida = {
+            const curtida: CurtidaEmCandidato = {
                 id: 0,
                 empresaId: getCurrentUser().id,
                 candidatoId: Number(candidatoId)
             }
-            addCurtidaACandidato(curtida)
+            addCurtida(curtida, 'candidatosCurtida');
 
             const curtidaIcones = <HTMLCollectionOf<HTMLImageElement>> document.getElementsByClassName(`curtida-icone-${candidatoId}`)
 
@@ -81,39 +78,4 @@ const handleCurtidaClick = () => {
 
 }
 
-
-
-const addCurtirCandidatoClickHandlers = () => {
-    const curtirButtons = <HTMLCollectionOf<HTMLButtonElement>> document.getElementsByClassName('curtir-candidato-buttons');
-
-    for (let i = 0; i < curtirButtons.length; i++) {
-        const curtirButton = curtirButtons[i];
-        console.log(curtirButton)
-        const candidatoId = curtirButton.id.split('-')[2];
-
-        curtirButton.addEventListener('click', () => {
-            const curtidaIdx = candidatosCurtidos.findIndex(curtida => curtida.candidatoId === Number(candidatoId));
-            if (curtidaIdx >= 0) {
-                const curtidaId = candidatosCurtidos[curtidaIdx].id;
-                removeCurtidaDoCandidato(curtidaId)
-                const curtidaIcone = <HTMLImageElement> document.getElementById(`candidato-icone-${candidatoId}`)
-                curtidaIcone.setAttribute('src', '/assets/fire.svg')
-                updateLocalCurtidas()
-            } else {
-                const curtida: Curtida = {
-                    id: 0,
-                    empresaId: getCurrentUser().id,
-                    candidatoId: Number(candidatoId)
-                }
-                addCurtidaACandidato(curtida)
-                const curtidaIcone = <HTMLImageElement> document.getElementById(`candidato-icone-${candidatoId}`)
-                curtidaIcone.setAttribute('src', '/assets/fire-liked.svg')
-                updateLocalCurtidas()
-            }
-        })
-    }
-}
-
-
-
-export {handleMouseOverCard, addCurtirCandidatoClickHandlers, closeModal, handleCurtidaClick}
+export {handleMouseOverCard, closeModal, handleCurtidaClick}
