@@ -2,18 +2,21 @@ import {
     handleAddCompetencia,
     handleCepBlur,
     handleCnpjBlur,
-    handleCpfBlur,
+    handleCpfBlur, handleNomeBlur,
     handleSenhaBlur
 } from "./input-handlers";
 
 
 const addEventListenersToRenderedInputs = () => {
+    const nomeInput = <HTMLInputElement | null> document.getElementById('nome');
     const cpfInput = <HTMLInputElement | null> document.getElementById('cpf');
     const cnpjInput = <HTMLInputElement | null> document.getElementById('cnpj');
     const cepInput = <HTMLInputElement> document.getElementById('cep');
     const confirmeSenhaInput = <HTMLInputElement> document.getElementById('confirme-senha');
     const senhaInput = <HTMLInputElement> document.getElementById('senha');
     const competenciaBtn = <HTMLButtonElement> document.getElementById('competencia-btn');
+
+    nomeInput && nomeInput.addEventListener('blur', handleNomeBlur);
 
     cpfInput && cpfInput.addEventListener('blur', handleCpfBlur)
 

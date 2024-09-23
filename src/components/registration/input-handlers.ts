@@ -1,9 +1,11 @@
-import {searchCep} from "../../utils/cep";
-import {formatCnpj, formatCpf} from "../../utils/cpf";
+import {searchCep} from "../../utils/form-validations/cep";
+import {formatCnpj, formatCpf} from "../../utils/form-validations/cpf";
 import Competencia from "../../model/Competencia";
 import {userCompetencias} from "./registration-form";
+import {validateCandidatoNome, validateEmpresaNome} from "../../utils/form-validations/nome";
 
 interface ValidationErrors {
+    nome: boolean,
     cep: boolean,
     cpf: boolean,
     cnpj: boolean,
@@ -11,10 +13,34 @@ interface ValidationErrors {
 }
 
 const validationErrors: ValidationErrors = {
+    nome: true,
     cep: true,
     cpf: true,
     cnpj: true,
     senha: true
+}
+
+const handleNomeBlur = async () => {
+    const nameInput = <HTMLInputElement> document.getElementById('nome');
+    const nomeError = <HTMLElement> document.getElementById('nome-error-message');
+    const form = <HTMLFormElement>document.getElementById('registration-form');
+    const registrationType = <'empresas' | 'candidatos'> form.getAttribute("data-registration-type");
+
+    try {
+        registrationType === 'candidatos' && validateCandidatoNome(nameInput.value);
+        registrationType === 'empresas' && validateEmpresaNome(nameInput.value);
+
+        if (!nomeError.hasAttribute('hidden')) {
+            nomeError.setAttribute('hidden', 'true');
+        }
+        validationErrors.nome = false;
+    } catch (e: any) {
+        nomeError.removeAttribute('hidden');
+        nomeError.innerText = e.message;
+        validationErrors.nome = true;
+    }
+
+
 }
 
 const handleCepBlur = async () => {
@@ -135,4 +161,4 @@ const handleRemoveCompetencia = (event: Event) => {
 }
 
 
-export {handleSenhaBlur, handleCepBlur, handleCpfBlur, handleCnpjBlur, handleAddCompetencia, validationErrors, ValidationErrors}
+export {handleNomeBlur, handleSenhaBlur, handleCepBlur, handleCpfBlur, handleCnpjBlur, handleAddCompetencia, validationErrors, ValidationErrors}

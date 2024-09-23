@@ -20,7 +20,7 @@ interface Input {
 }
 
 const defaultInputs: Input[] = [
-    { title: 'Nome', id: 'nome', type: 'text'},
+    { title: 'Nome', id: 'nome', type: 'text', error: 'Nome deve conter mais de 2 caracteres e conter apenas letras'},
     { title: 'Email', id:'email', type: 'email', error: 'Email já está em uso'},
     { title: 'Senha', id:'senha', type: 'password', minlength: '6'},
     { title: 'Confirme a senha', id:'confirme-senha', type: 'password',  error: 'As senhas devem ser iguais!'},

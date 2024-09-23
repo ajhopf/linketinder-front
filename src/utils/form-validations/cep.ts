@@ -1,4 +1,4 @@
-import {CepInvalidError} from "../errors/cep-invalid-error";
+import {CepInvalidError} from "../../errors/cep-invalid-error";
 
 const searchCep = async (cepInput: HTMLInputElement, estado: HTMLInputElement, pais: HTMLInputElement) => {
     const cep = cepInput.value;

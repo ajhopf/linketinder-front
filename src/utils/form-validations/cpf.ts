@@ -1,4 +1,4 @@
-import {CpfCnpjError} from "../errors/cpf-cnpj-error";
+import {CpfCnpjError} from "../../errors/cpf-cnpj-error";
 
 const formatCpf = (cpf: string): string => {
     const onlyNumbersCpf = cpf.replace(/\D/g, '')
