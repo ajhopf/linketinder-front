@@ -179,11 +179,11 @@ const submitRegistration = (event: SubmitEvent) => {
 
         const usuario: Usuario = {
             id: 0,
-            nome: <string> data.get('nome'),
-            senha: <string> data.get('senha'),
+            nome: (<string> data.get('nome')).trim(),
+            senha: (<string> data.get('senha')).trim(),
             competencias: userCompetencias,
-            descricao: <string> data.get('descricao'),
-            email: <string> data.get('email'),
+            descricao: (<string> data.get('descricao')).trim(),
+            email: (<string> data.get('email')).trim(),
             endereco: <Endereco> {
                 cep: <string> data.get('cep'),
                 estado: <string> data.get('estado'),

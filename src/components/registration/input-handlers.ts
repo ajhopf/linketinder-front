@@ -3,9 +3,11 @@ import {formatCnpj, formatCpf} from "../../utils/form-validations/cpf";
 import Competencia from "../../model/Competencia";
 import {userCompetencias} from "./registration-form";
 import {validateCandidatoNome, validateEmpresaNome} from "../../utils/form-validations/nome";
+import {validateEmail} from "../../utils/form-validations/email";
 
 interface ValidationErrors {
     nome: boolean,
+    email: boolean,
     cep: boolean,
     cpf: boolean,
     cnpj: boolean,
@@ -14,13 +16,14 @@ interface ValidationErrors {
 
 const validationErrors: ValidationErrors = {
     nome: true,
+    email: true,
     cep: true,
     cpf: true,
     cnpj: true,
     senha: true
 }
 
-const handleNomeBlur = async () => {
+const handleNomeBlur = () => {
     const nameInput = <HTMLInputElement> document.getElementById('nome');
     const nomeError = <HTMLElement> document.getElementById('nome-error-message');
     const form = <HTMLFormElement>document.getElementById('registration-form');
@@ -39,8 +42,24 @@ const handleNomeBlur = async () => {
         nomeError.innerText = e.message;
         validationErrors.nome = true;
     }
+}
 
+const handleEmailBlur = () => {
+    const emailInput = <HTMLInputElement> document.getElementById('email');
+    const emailError = <HTMLElement> document.getElementById('email-error-message');
 
+    try {
+        validateEmail(emailInput.value);
+
+        if (!emailError.hasAttribute('hidden')) {
+            emailError.setAttribute('hidden', 'true');
+        }
+        validationErrors.email = false;
+    } catch (e: any) {
+        emailError.removeAttribute('hidden');
+        emailError.innerText = e.message;
+        validationErrors.email = true;
+    }
 }
 
 const handleCepBlur = async () => {
@@ -161,4 +180,4 @@ const handleRemoveCompetencia = (event: Event) => {
 }
 
 
-export {handleNomeBlur, handleSenhaBlur, handleCepBlur, handleCpfBlur, handleCnpjBlur, handleAddCompetencia, validationErrors, ValidationErrors}
+export {handleNomeBlur, handleEmailBlur, handleSenhaBlur, handleCepBlur, handleCpfBlur, handleCnpjBlur, handleAddCompetencia, validationErrors, ValidationErrors}
