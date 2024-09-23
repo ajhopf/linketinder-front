@@ -3,7 +3,7 @@ import {
     handleCepBlur,
     handleCnpjBlur,
     handleCpfBlur, handleEmailBlur, handleNomeBlur,
-    handleSenhaBlur
+    handleSenhaBlur, handleTelefoneBlur
 } from "./input-handlers";
 
 const getInputs = () => {
@@ -12,25 +12,28 @@ const getInputs = () => {
     const cpfInput = <HTMLInputElement | null> document.getElementById('cpf');
     const cnpjInput = <HTMLInputElement | null> document.getElementById('cnpj');
     const cepInput = <HTMLInputElement> document.getElementById('cep');
+    const telefoneInput = <HTMLInputElement | null> document.getElementById('telefone')
     const confirmeSenhaInput = <HTMLInputElement> document.getElementById('confirme-senha');
     const senhaInput = <HTMLInputElement> document.getElementById('senha');
     const competenciaBtn = <HTMLButtonElement> document.getElementById('competencia-btn');
 
-    return { nomeInput, emailInput, cpfInput, cnpjInput, cepInput, confirmeSenhaInput, senhaInput, competenciaBtn }
+    return { nomeInput, emailInput, cpfInput, cnpjInput, cepInput, telefoneInput, confirmeSenhaInput, senhaInput, competenciaBtn }
 }
 
 const addEventListenersToRenderedInputs = () => {
-    const {nomeInput, emailInput, cpfInput, cnpjInput, cepInput, confirmeSenhaInput, senhaInput, competenciaBtn } = getInputs();
+    const {nomeInput, emailInput, cpfInput, cnpjInput, cepInput, telefoneInput, confirmeSenhaInput, senhaInput, competenciaBtn } = getInputs();
 
     nomeInput && nomeInput.addEventListener('blur', handleNomeBlur);
 
     emailInput && emailInput.addEventListener('blur', handleEmailBlur);
 
-    cpfInput && cpfInput.addEventListener('blur', handleCpfBlur);
+    cpfInput && cpfInput?.addEventListener('blur', handleCpfBlur);
 
     cnpjInput && cnpjInput.addEventListener('blur', handleCnpjBlur);
 
     cepInput.addEventListener('blur', handleCepBlur);
+
+    telefoneInput && telefoneInput.addEventListener('blur', handleTelefoneBlur);
 
     senhaInput.addEventListener('blur', handleSenhaBlur);
     confirmeSenhaInput.addEventListener('blur', handleSenhaBlur);
@@ -39,7 +42,7 @@ const addEventListenersToRenderedInputs = () => {
 }
 
 const removeEventListeners = () => {
-    const {nomeInput, emailInput, cpfInput, cnpjInput, cepInput, confirmeSenhaInput, senhaInput, competenciaBtn } = getInputs();
+    const {nomeInput, emailInput, cpfInput, cnpjInput, cepInput, telefoneInput, confirmeSenhaInput, senhaInput, competenciaBtn } = getInputs();
 
     nomeInput && nomeInput.removeEventListener('blur', handleNomeBlur);
 
@@ -50,6 +53,8 @@ const removeEventListeners = () => {
     cnpjInput && cnpjInput.removeEventListener('blur', handleCnpjBlur);
 
     cepInput && cepInput.removeEventListener('blur', handleCepBlur);
+
+    telefoneInput && telefoneInput.removeEventListener('blur', handleTelefoneBlur);
 
     senhaInput && senhaInput.removeEventListener('blur', handleSenhaBlur);
     confirmeSenhaInput && confirmeSenhaInput.removeEventListener('blur', handleSenhaBlur);

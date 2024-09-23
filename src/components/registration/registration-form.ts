@@ -38,7 +38,9 @@ const defaultInputs: Input[] = [
 
 const candidatoInputs: Input[] = [
     {title: 'Cpf', id: 'cpf', type: 'text', minlength: '11', maxlength: '14', error: 'Cpf inválido'},
-    {title: 'Idade', id: 'idade', type: 'text'}
+    {title: 'Idade', id: 'idade', type: 'text'},
+    {title: 'Telefone', id: 'telefone', type: 'text'},
+    {title: 'Linkedin', id: 'linkedin', type: 'text'},
 ]
 
 const empresaInputs: Input[] = [
@@ -152,7 +154,7 @@ const checkFormErrors = (registrationType: 'empresas' | 'candidatos') => {
 
     for (key in validationErrors) {
         if (validationErrors[key]) {
-            if (registrationType === 'empresas' && key === 'cpf') {
+            if (registrationType === 'empresas' && ['cpf', 'linkedin', 'telefone', 'idade'].includes(key)) {
                 break;
             } else if (registrationType === 'candidatos' && key === 'cnpj') {
                 break;
@@ -202,7 +204,9 @@ const submitRegistration = (event: SubmitEvent) => {
             const candidato: Candidato = {
                 ...usuario,
                 cpf: <string> data.get('cpf'),
-                idade: Number(data.get('idade'))
+                idade: Number(data.get('idade')),
+                telefone: <string> data.get('telefone'),
+                linkedin: <string> data.get('linkedin')
             }
 
             registerUser(candidato, "candidato");
@@ -214,7 +218,9 @@ const submitRegistration = (event: SubmitEvent) => {
     } catch (e) {
         if (e instanceof EmailInUseError) {
             const emailError = <HTMLElement> document.getElementById('email-error-message');
+            const formError = <HTMLElement> document.getElementById('form-error-message');
             emailError.removeAttribute('hidden')
+            formError.innerText = 'Email já está em uso';
         }
 
         if (e instanceof FormInvalidError) {

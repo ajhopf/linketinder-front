@@ -6,6 +6,7 @@ import {validateCandidatoNome, validateEmpresaNome} from "../../utils/form-valid
 import {validateEmail} from "../../utils/form-validations/email";
 import {searchCep} from "../../utils/via-cep";
 import {validateSenha} from "../../utils/form-validations/senha";
+import {validateAndFormatTelefone} from "../../utils/form-validations/telefone";
 
 interface ValidationErrors {
     nome: boolean,
@@ -13,7 +14,9 @@ interface ValidationErrors {
     cep: boolean,
     cpf: boolean,
     cnpj: boolean,
-    senha: boolean
+    senha: boolean,
+    telefone: boolean,
+    linkedin: boolean
 }
 
 const validationErrors: ValidationErrors = {
@@ -22,7 +25,9 @@ const validationErrors: ValidationErrors = {
     cep: true,
     cpf: true,
     cnpj: true,
-    senha: true
+    senha: true,
+    telefone: true,
+    linkedin: true
 }
 
 const handleNomeBlur = () => {
@@ -116,6 +121,24 @@ const handleCnpjBlur = () => {
     }
 }
 
+const handleTelefoneBlur = () => {
+    const telefone = <HTMLInputElement> document.getElementById('telefone');
+    const telefoneError = <HTMLElement> document.getElementById('telefone-error-message');
+
+    try {
+        telefone.value = validateAndFormatTelefone(telefone.value);
+
+        if (!telefoneError.hasAttribute('hidden')) {
+            telefoneError.setAttribute('hidden', 'true');
+        }
+        validationErrors.telefone = false;
+    } catch (e: any) {
+        telefoneError.removeAttribute('hidden');
+        telefoneError.innerText = e.message;
+        validationErrors.telefone = true;
+    }
+}
+
 const handleSenhaBlur = () => {
     const senha = <HTMLInputElement> document.getElementById('senha');
     const confirmeSenhaInput = <HTMLInputElement> document.getElementById('confirme-senha');
@@ -183,10 +206,9 @@ const handleRemoveCompetencia = (event: Event) => {
 
     if (eventTarget) {
         const liId = eventTarget.id;
-        console.log("Clicked LI ID:", liId);
+
         const idx = userCompetencias.findIndex(competencia => competencia.competencia === liId);
         userCompetencias.splice(idx, 1);
-        console.log(userCompetencias)
     }
 
     eventTarget.removeEventListener('click', handleRemoveCompetencia);
@@ -194,4 +216,4 @@ const handleRemoveCompetencia = (event: Event) => {
 }
 
 
-export {handleNomeBlur, handleEmailBlur, handleSenhaBlur, handleCepBlur, handleCpfBlur, handleCnpjBlur, handleAddCompetencia, validationErrors, ValidationErrors}
+export {handleNomeBlur, handleEmailBlur, handleSenhaBlur, handleTelefoneBlur, handleCepBlur, handleCpfBlur, handleCnpjBlur, handleAddCompetencia, validationErrors, ValidationErrors}
