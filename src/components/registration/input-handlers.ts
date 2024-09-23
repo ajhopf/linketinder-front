@@ -1,9 +1,11 @@
-import {searchCep} from "../../utils/form-validations/cep";
-import {formatCnpj, formatCpf} from "../../utils/form-validations/cpf";
+
+import {validateAndFormatCnpj, validateAndFormatCpf} from "../../utils/form-validations/cpf";
 import Competencia from "../../model/Competencia";
 import {userCompetencias} from "./registration-form";
 import {validateCandidatoNome, validateEmpresaNome} from "../../utils/form-validations/nome";
 import {validateEmail} from "../../utils/form-validations/email";
+import {searchCep} from "../../utils/via-cep";
+import {validateSenha} from "../../utils/form-validations/senha";
 
 interface ValidationErrors {
     nome: boolean,
@@ -70,6 +72,7 @@ const handleCepBlur = async () => {
 
     try {
         await searchCep(cepInput, estadoInput, paisInput)
+
         if (!cepError.hasAttribute('hidden')) {
             cepError.setAttribute('hidden', 'true');
         }
@@ -85,7 +88,7 @@ const handleCpfBlur = () => {
     const cpfError = <HTMLElement> document.getElementById('cpf-error-message');
 
     try {
-        cpfInput.value = formatCpf(cpfInput.value)
+        cpfInput.value = validateAndFormatCpf(cpfInput.value)
         if (!cpfError.hasAttribute('hidden')) {
             cpfError.setAttribute('hidden', 'true');
         }
@@ -102,7 +105,7 @@ const handleCnpjBlur = () => {
     const cnpjError = <HTMLElement> document.getElementById('cnpj-error-message');
 
     try {
-        cnpjInput.value = formatCnpj(cnpjInput.value)
+        cnpjInput.value = validateAndFormatCnpj(cnpjInput.value)
         if (!cnpjError.hasAttribute('hidden')) {
             cnpjError.setAttribute('hidden', 'true');
         }
@@ -118,14 +121,25 @@ const handleSenhaBlur = () => {
     const confirmeSenhaInput = <HTMLInputElement> document.getElementById('confirme-senha');
     const confirmeSenhaError = <HTMLInputElement> document.getElementById('confirme-senha-error-message');
 
-    if (senha.value.length > 0 && confirmeSenhaInput.value.length > 0 && senha.value !== confirmeSenhaInput.value) {
-        confirmeSenhaError.removeAttribute('hidden')
-        validationErrors.senha = false;
-    } else {
-        if (!confirmeSenhaError.hasAttribute('hidden')) {
-            confirmeSenhaError.setAttribute('hidden', 'true');
+    try {
+        validateSenha(senha.value);
+
+        if (senha.value === confirmeSenhaInput.value) {
+            if (!confirmeSenhaError.hasAttribute('hidden')) {
+                confirmeSenhaError.setAttribute('hidden', 'true');
+            }
+            validationErrors.cpf = false;
+        } else {
+            if (confirmeSenhaInput.value.length > 0) {
+                confirmeSenhaError.removeAttribute('hidden')
+                confirmeSenhaError.innerText = 'A senha de confirmação deve ser igual a senha definida';
+            }
+            validationErrors.cpf = true;
         }
-        validationErrors.senha = true;
+    } catch (e: any) {
+        confirmeSenhaError.removeAttribute('hidden')
+        confirmeSenhaError.innerText = e.message;
+        validationErrors.cpf = true;
     }
 }
 

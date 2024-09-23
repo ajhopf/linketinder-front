@@ -7,7 +7,7 @@ const validateCandidatoNome = (nome: string) => {
 
     const pattern = /^[A-zÀ-ü]{2,}\s[A-zÀ-ü]+(\s[A-zÀ-ü]+)?$/
 
-    if (!nome.trim().match(pattern)) {
+    if (!pattern.test(nome)) {
         throw new NomeInvalidError('O nome deve incluir ao menos um sobrenome\n O primeiro nome deve ter mais de 2 letras\n Deve conter apenas letras')
     }
 }
@@ -15,7 +15,7 @@ const validateCandidatoNome = (nome: string) => {
 const validateEmpresaNome = (nome: string) => {
     const pattern = /^\w{2,}$/
 
-    if (!nome.trim().match(pattern)) {
+    if (!pattern.test(nome)) {
         throw new NomeInvalidError('O nome deve conter ao menos 2 caracteres.')
     }
 }
