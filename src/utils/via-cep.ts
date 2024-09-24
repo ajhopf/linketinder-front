@@ -10,7 +10,14 @@ const searchCep = async (cep: string) => {
         throw new CepInvalidError(`Não foi possível obter informações do cep: status ${response.status}`);
     }
 
-    return await response.json();
+    const data = await response.json();
+
+    if (data.erro) {
+        throw new CepInvalidError(`Não foi possível obter informações do cep: ${cep}`)
+    }
+
+    return data;
+
 };
 
 export {searchCep}

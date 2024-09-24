@@ -13,6 +13,7 @@ interface Input {
     title: string;
     id: string;
     type: string;
+    placeholder?: string;
     error?: string;
     minlength?: string;
     maxlength?: string;
@@ -20,16 +21,17 @@ interface Input {
 }
 
 const defaultInputs: Input[] = [
-    { title: 'Nome', id: 'nome', type: 'text', error: 'Nome deve conter mais de 2 caracteres e conter apenas letras'},
-    { title: 'Email', id:'email', type: 'email', error: 'Email já está em uso'},
+    { title: 'Nome', id: 'nome', type: 'text', placeholder: "Nome Sobrenome",error: 'Nome deve conter mais de 2 caracteres e conter apenas letras'},
+    { title: 'Email', id:'email', type: 'email', placeholder: "email@email.com", error: 'Email já está em uso'},
     { title: 'Senha', id:'senha', type: 'password', minlength: '6'},
     { title: 'Confirme a senha', id:'confirme-senha', type: 'password',  error: 'As senhas devem ser iguais!'},
-    { title: 'Descrição', id: 'descricao', type: 'text-area'},
+    { title: 'Descrição', id: 'descricao', type: 'text', placeholder: "Preencha seu nome primeiro", readonly: true},
     {
         title: 'Cep',
         id: 'cep',
         type: 'text',
         maxlength: '9',
+        placeholder: "99999-999",
         error: 'Cep inválido'
     },
     { title: 'Estado', id: 'estado', type: 'text', readonly: true },
@@ -37,14 +39,14 @@ const defaultInputs: Input[] = [
 ];
 
 const candidatoInputs: Input[] = [
-    {title: 'Cpf', id: 'cpf', type: 'text', minlength: '11', maxlength: '14', error: 'Cpf inválido'},
-    {title: 'Idade', id: 'idade', type: 'text'},
-    {title: 'Telefone', id: 'telefone', type: 'text'},
-    {title: 'Linkedin', id: 'linkedin', type: 'text'},
+    {title: 'Cpf', id: 'cpf', type: 'text', placeholder: "123.456.789-00", minlength: '11', maxlength: '14', error: 'Cpf inválido'},
+    {title: 'Idade', id: 'idade', type: 'number'},
+    {title: 'Telefone', id: 'telefone', placeholder: "(99) 99999-9999", type: 'text'},
+    {title: 'Linkedin', id: 'linkedin', placeholder: "linkedin.com/in/seu-perfil",type: 'text'},
 ]
 
 const empresaInputs: Input[] = [
-    {title: 'Cnpj', id: 'cnpj', type: 'text', minlength: '14', maxlength: '18', error: 'Cnpj inválido'},
+    {title: 'Cnpj', id: 'cnpj', type: 'text', placeholder: "12.345.678/9123-45", minlength: '14', maxlength: '18', error: 'Cnpj inválido'},
 ]
 
 const userCompetencias: Competencia[] = [];
@@ -82,6 +84,7 @@ const textInputBuilder = (input: Input): string => {
             name=${input.id} 
             class="form-control" 
             required
+            ${input.placeholder && 'placeholder="'+input.placeholder+'"'}
             ${input.maxlength && 'maxlength='+input.maxlength }
             ${input.minlength && 'minlength='+input.minlength }
             ${input.readonly && 'disabled'}
@@ -99,6 +102,9 @@ const competenciasInputBuilder = (registrationType: 'empresas' | 'candidatos'): 
         <div>
             <label for="competencia" class="form-label">Competencias</label>
             <input type="text" id="competencia" class="form-control mb-3">
+             <div class="d-flex justify-content-center my-3">
+               <small hidden id="competencia-error-message" class="text-danger text-center">Erro ao adicionar competencia</small>
+            </div>
         </div>
         <div>
             <label for="experiencia-competencia" class="form-label">Anos de Experiência</label>

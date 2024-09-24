@@ -1,6 +1,7 @@
-import {competenciasExigidasParaVaga, handleAddCompetencia, handleRemoveCompetencia} from "./input-handlers";
+import {competenciasExigidasParaVaga, handleAddCompetencia} from "./input-handlers";
 import {Vaga} from "../../../../model/Vaga";
 import {createVaga} from "../../../../service/vagas-service";
+import {genericHandleRemoveCompetencia} from "../../../shared/competencia-handlers";
 
 const buildVagaForm = () => {
     return `
@@ -78,7 +79,7 @@ const clearVagaForm = () => {
     competenciasExigidasParaVaga.splice(0)
 
     for (let child of competenciasList.children) {
-        child.removeEventListener('click', handleRemoveCompetencia);
+        child.removeEventListener('click', (event) => genericHandleRemoveCompetencia(event, competenciasExigidasParaVaga));
         child.remove();
     }
 

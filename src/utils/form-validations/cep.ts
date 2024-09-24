@@ -6,7 +6,7 @@ const validateAndFormatCep = (cep: string) => {
     const validacep = /^[0-9]{8}$/;
 
     if (!validacep.test(cepFormatado)) {
-        throw new CepInvalidError("Formato de CEP inválido.");
+        throw new CepInvalidError("CEP inválido.");
     } else {
         return cepFormatado.replace(/(\d{5})(\d{3})/, "$1-$2");
     }
