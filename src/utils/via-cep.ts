@@ -1,28 +1,16 @@
-import {CepInvalidError} from "../errors/cep-invalid-error";
-import {validaCep} from "./form-validations/cep";
+import {CepInvalidError} from "../errors/registration-form-errors/cep-invalid-error";
 
-const searchCep = async (cepInput: HTMLInputElement, estado: HTMLInputElement, pais: HTMLInputElement) => {
-    const cep = cepInput.value;
+const searchCep = async (cep: string) => {
 
-    try {
-        const cepFormatado = validaCep(cep);
+    const onlyNumbersCep = cep.replace(/\D/, '');
 
-        estado.value="...";
-        pais.value="...";
+    const response = await fetch(`https://viacep.com.br/ws/${onlyNumbersCep}/json/`)
 
-        const response = await fetch(`https://viacep.com.br/ws/${cepFormatado}/json/`)
-
-        if (!response.ok) {
-            throw new CepInvalidError(`Response status: ${response.status}`);
-        }
-        const data = await response.json();
-
-        estado.value = data.estado;
-        pais.value = "Brasil"
-    } catch(e) {
-        throw e;
+    if (!response.ok) {
+        throw new CepInvalidError(`Não foi possível obter informações do cep: status ${response.status}`);
     }
 
+    return await response.json();
 };
 
 export {searchCep}

@@ -1,4 +1,4 @@
-import {SenhaInvalidError} from "../../errors/senha-invalid-error";
+import {SenhaInvalidError} from "../../errors/registration-form-errors/senha-invalid-error";
 
 const validateSenha = (senha: string) => {
     const moreThanEight = /.{8,}/.test(senha);

@@ -35,9 +35,6 @@ const colorsHover = ['rgb(255, 99, 132)',
     'rgb(54, 162, 235)',]
 
 const addChart = async (items: Candidato[] | Vaga[], tooltipLabel: string) => {
-
-
-
     const categorias: {categoria: string, contagem: number}[] = [];
 
     items.forEach(item => {

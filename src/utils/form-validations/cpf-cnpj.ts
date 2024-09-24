@@ -1,4 +1,4 @@
-import {CpfCnpjError} from "../../errors/cpf-cnpj-error";
+import {CpfCnpjError} from "../../errors/registration-form-errors/cpf-cnpj-error";
 
 const validateAndFormatCpf = (cpf: string): string => {
     const onlyNumbersCpf = cpf.replace(/\D/g, '')

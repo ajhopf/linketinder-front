@@ -1,4 +1,4 @@
-import {NomeInvalidError} from "../../errors/nome-invalid-error";
+import {NomeInvalidError} from "../../errors/registration-form-errors/nome-invalid-error";
 
 const validateCandidatoNome = (nome: string) => {
     // Has at least one surname -> one blank space in the middle of the word required

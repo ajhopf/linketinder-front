@@ -67,7 +67,7 @@ const handleCurtidaClick = () => {
                 vagaId: Number(vagaId),
                 candidatoId: getCurrentUser().id
             }
-            addCurtida(curtida, 'vagasCurtida');
+            addCurtida<CurtidaEmVaga>(curtida, 'vagasCurtida');
 
             const curtidaIcones = <HTMLCollectionOf<HTMLImageElement>> document.getElementsByClassName(`curtida-icone-${vagaId}`)
 

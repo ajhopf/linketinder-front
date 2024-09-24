@@ -64,7 +64,8 @@ const handleCurtidaClick = () => {
                 empresaId: getCurrentUser().id,
                 candidatoId: Number(candidatoId)
             }
-            addCurtida(curtida, 'candidatosCurtida');
+
+            addCurtida<CurtidaEmCandidato>(curtida, 'candidatosCurtida');
 
             const curtidaIcones = <HTMLCollectionOf<HTMLImageElement>> document.getElementsByClassName(`curtida-icone-${candidatoId}`)
 

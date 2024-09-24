@@ -1,5 +1,5 @@
 
-import {validateAndFormatCnpj, validateAndFormatCpf} from "../../utils/form-validations/cpf";
+import {validateAndFormatCnpj, validateAndFormatCpf} from "../../utils/form-validations/cpf-cnpj";
 import Competencia from "../../model/Competencia";
 import {userCompetencias} from "./registration-form";
 import {validateCandidatoNome, validateEmpresaNome} from "../../utils/form-validations/nome";
@@ -7,6 +7,8 @@ import {validateEmail} from "../../utils/form-validations/email";
 import {searchCep} from "../../utils/via-cep";
 import {validateSenha} from "../../utils/form-validations/senha";
 import {validateAndFormatTelefone} from "../../utils/form-validations/telefone";
+import {validateLinkedin} from "../../utils/form-validations/linkedin";
+import {validateAndFormatCep} from "../../utils/form-validations/cep";
 
 interface ValidationErrors {
     nome: boolean,
@@ -30,112 +32,83 @@ const validationErrors: ValidationErrors = {
     linkedin: true
 }
 
+type GenericHandlerIdentifier = 'nome' | 'email' | 'cep' | 'cpf' | 'cnpj' | 'senha' | 'telefone' | 'linkedin'
+
+const genericHandler = (identifier: GenericHandlerIdentifier, validationFn: (param: string) => void | string) => {
+    const input = <HTMLInputElement> document.getElementById(identifier);
+    const inputError = <HTMLElement> document.getElementById(`${identifier}-error-message`);
+
+    try {
+        const fnReturn = validationFn(input.value);
+
+        if (!inputError.hasAttribute('hidden')) {
+            inputError.setAttribute('hidden', 'true');
+        }
+
+        validationErrors[identifier] = false;
+
+        if (fnReturn) {
+            input.value = fnReturn;
+            return fnReturn;
+        }
+    } catch (e: any) {
+        inputError.removeAttribute('hidden');
+        inputError.innerText = e.message;
+        validationErrors[identifier] = true;
+    }
+}
+
 const handleNomeBlur = () => {
-    const nameInput = <HTMLInputElement> document.getElementById('nome');
-    const nomeError = <HTMLElement> document.getElementById('nome-error-message');
     const form = <HTMLFormElement>document.getElementById('registration-form');
     const registrationType = <'empresas' | 'candidatos'> form.getAttribute("data-registration-type");
 
-    try {
-        registrationType === 'candidatos' && validateCandidatoNome(nameInput.value);
-        registrationType === 'empresas' && validateEmpresaNome(nameInput.value);
-
-        if (!nomeError.hasAttribute('hidden')) {
-            nomeError.setAttribute('hidden', 'true');
-        }
-        validationErrors.nome = false;
-    } catch (e: any) {
-        nomeError.removeAttribute('hidden');
-        nomeError.innerText = e.message;
-        validationErrors.nome = true;
-    }
+    registrationType === 'candidatos' && genericHandler('nome', validateCandidatoNome)
+    registrationType === 'empresas' && genericHandler('nome', validateEmpresaNome)
 }
 
 const handleEmailBlur = () => {
-    const emailInput = <HTMLInputElement> document.getElementById('email');
-    const emailError = <HTMLElement> document.getElementById('email-error-message');
-
-    try {
-        validateEmail(emailInput.value);
-
-        if (!emailError.hasAttribute('hidden')) {
-            emailError.setAttribute('hidden', 'true');
-        }
-        validationErrors.email = false;
-    } catch (e: any) {
-        emailError.removeAttribute('hidden');
-        emailError.innerText = e.message;
-        validationErrors.email = true;
-    }
-}
-
-const handleCepBlur = async () => {
-    const cepInput = <HTMLInputElement> document.getElementById('cep');
-    const estadoInput = <HTMLInputElement> document.getElementById('estado');
-    const paisInput = <HTMLInputElement> document.getElementById('pais');
-    const cepError = <HTMLElement> document.getElementById('cep-error-message');
-
-    try {
-        await searchCep(cepInput, estadoInput, paisInput)
-
-        if (!cepError.hasAttribute('hidden')) {
-            cepError.setAttribute('hidden', 'true');
-        }
-        validationErrors.cep = false;
-    } catch (e) {
-        cepError.removeAttribute('hidden')
-        validationErrors.cep = true;
-    }
+    genericHandler('email', validateEmail);
 }
 
 const handleCpfBlur = () => {
-    const cpfInput = <HTMLInputElement> document.getElementById('cpf');
-    const cpfError = <HTMLElement> document.getElementById('cpf-error-message');
-
-    try {
-        cpfInput.value = validateAndFormatCpf(cpfInput.value)
-        if (!cpfError.hasAttribute('hidden')) {
-            cpfError.setAttribute('hidden', 'true');
-        }
-        validationErrors.cpf = false;
-    } catch (e) {
-        cpfError.removeAttribute('hidden')
-        validationErrors.cpf = true;
-    }
+    genericHandler('cpf', validateAndFormatCpf);
 }
 
 
 const handleCnpjBlur = () => {
-    const cnpjInput = <HTMLInputElement> document.getElementById('cnpj');
-    const cnpjError = <HTMLElement> document.getElementById('cnpj-error-message');
+    genericHandler('cnpj', validateAndFormatCnpj);
+}
 
-    try {
-        cnpjInput.value = validateAndFormatCnpj(cnpjInput.value)
-        if (!cnpjError.hasAttribute('hidden')) {
-            cnpjError.setAttribute('hidden', 'true');
-        }
-        validationErrors.cnpj = false;
-    } catch (e) {
-        cnpjError.removeAttribute('hidden')
-        validationErrors.cnpj = true;
-    }
+const handleLinkedinBlur = () => {
+    genericHandler('linkedin', validateLinkedin);
 }
 
 const handleTelefoneBlur = () => {
-    const telefone = <HTMLInputElement> document.getElementById('telefone');
-    const telefoneError = <HTMLElement> document.getElementById('telefone-error-message');
+    genericHandler('telefone', validateAndFormatTelefone);
+}
 
-    try {
-        telefone.value = validateAndFormatTelefone(telefone.value);
+const handleCepBlur = async () => {
+    const estadoInput = <HTMLInputElement> document.getElementById('estado');
+    const paisInput = <HTMLInputElement> document.getElementById('pais');
+    const cepError = <HTMLElement> document.getElementById('cep-error-message');
 
-        if (!telefoneError.hasAttribute('hidden')) {
-            telefoneError.setAttribute('hidden', 'true');
-        }
-        validationErrors.telefone = false;
-    } catch (e: any) {
-        telefoneError.removeAttribute('hidden');
-        telefoneError.innerText = e.message;
-        validationErrors.telefone = true;
+    const formattedCep = genericHandler('cep', validateAndFormatCep);
+
+    if (formattedCep) {
+       try {
+           estadoInput.value="...";
+           paisInput.value="...";
+
+           const address = await searchCep(formattedCep);
+
+           estadoInput.value = address.estado;
+           paisInput.value = "Brasil"
+       } catch (e: any) {
+           cepError.removeAttribute('hidden')
+           cepError.innerText = e.message;
+           validationErrors.cep = true;
+       }
+
     }
 }
 
@@ -144,25 +117,19 @@ const handleSenhaBlur = () => {
     const confirmeSenhaInput = <HTMLInputElement> document.getElementById('confirme-senha');
     const confirmeSenhaError = <HTMLInputElement> document.getElementById('confirme-senha-error-message');
 
-    try {
-        validateSenha(senha.value);
+    genericHandler('senha', validateSenha);
 
-        if (senha.value === confirmeSenhaInput.value) {
-            if (!confirmeSenhaError.hasAttribute('hidden')) {
-                confirmeSenhaError.setAttribute('hidden', 'true');
-            }
-            validationErrors.cpf = false;
-        } else {
-            if (confirmeSenhaInput.value.length > 0) {
-                confirmeSenhaError.removeAttribute('hidden')
-                confirmeSenhaError.innerText = 'A senha de confirmação deve ser igual a senha definida';
-            }
-            validationErrors.cpf = true;
+    if (senha.value === confirmeSenhaInput.value) {
+        if (!confirmeSenhaError.hasAttribute('hidden')) {
+            confirmeSenhaError.setAttribute('hidden', 'true');
         }
-    } catch (e: any) {
-        confirmeSenhaError.removeAttribute('hidden')
-        confirmeSenhaError.innerText = e.message;
-        validationErrors.cpf = true;
+        validationErrors.senha = false;
+    } else {
+        if (confirmeSenhaInput.value.length > 0) {
+            confirmeSenhaError.removeAttribute('hidden')
+            confirmeSenhaError.innerText = 'A senha de confirmação deve ser igual a senha definida';
+        }
+        validationErrors.senha = true;
     }
 }
 
@@ -216,4 +183,4 @@ const handleRemoveCompetencia = (event: Event) => {
 }
 
 
-export {handleNomeBlur, handleEmailBlur, handleSenhaBlur, handleTelefoneBlur, handleCepBlur, handleCpfBlur, handleCnpjBlur, handleAddCompetencia, validationErrors, ValidationErrors}
+export {handleNomeBlur, handleEmailBlur, handleSenhaBlur, handleLinkedinBlur, handleTelefoneBlur, handleCepBlur, handleCpfBlur, handleCnpjBlur, handleAddCompetencia, validationErrors, ValidationErrors}

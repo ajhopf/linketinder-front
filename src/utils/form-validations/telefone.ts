@@ -1,4 +1,4 @@
-import {TelefoneInvalidError} from "../../errors/telefone-invalid-error";
+import {TelefoneInvalidError} from "../../errors/registration-form-errors/telefone-invalid-error";
 
 const validateAndFormatTelefone = (telefone: string) => {
     const onlyNumbersTelefone = telefone.replace(/\D/g, '')

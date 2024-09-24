@@ -1,6 +1,6 @@
-import {CepInvalidError} from "../../errors/cep-invalid-error";
+import {CepInvalidError} from "../../errors/registration-form-errors/cep-invalid-error";
 
-const validaCep = (cep: string) => {
+const validateAndFormatCep = (cep: string) => {
     let cepFormatado = cep.replace(/\D/g, '');
 
     const validacep = /^[0-9]{8}$/;
@@ -8,10 +8,10 @@ const validaCep = (cep: string) => {
     if (!validacep.test(cepFormatado)) {
         throw new CepInvalidError("Formato de CEP inválido.");
     } else {
-        return cepFormatado;
+        return cepFormatado.replace(/(\d{5})(\d{3})/, "$1-$2");
     }
 }
 
 
 
-export {validaCep};
+export {validateAndFormatCep};

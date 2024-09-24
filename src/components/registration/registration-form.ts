@@ -3,10 +3,10 @@ import {Usuario} from "../../model/Usuario";
 import Endereco from "../../model/Endereco";
 import Empresa from "../../model/Empresa";
 import Candidato from "../../model/Candidato";
-import {EmailInUseError} from "../../errors/email-in-use-error";
+import {EmailInUseError} from "../../errors/registration-form-errors/email-in-use-error";
 import {addEventListenersToRenderedInputs, removeEventListeners} from "./event-listeners";
 import {ValidationErrors, validationErrors} from "./input-handlers";
-import {FormInvalidError} from "../../errors/form-invalid-error";
+import {FormInvalidError} from "../../errors/registration-form-errors/form-invalid-error";
 import Competencia from "../../model/Competencia";
 
 interface Input {

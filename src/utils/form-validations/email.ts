@@ -1,4 +1,4 @@
-import {EmailInvalidError} from "../../errors/email-invalid-error";
+import {EmailInvalidError} from "../../errors/registration-form-errors/email-invalid-error";
 
 const validateEmail = (email: string) => {
     const pattern = /^[\w._%+-]+@\w+\.\w{2,}(\.\w{2,})?$/
