@@ -13,13 +13,18 @@ const showSimpleCompetencias = (competencias: Competencia[]) => {
     }
 
     return principaisCompetencias.map((competencia: Competencia) => {
-        console.log(competencia)
+
         return `
             <li class="col-3 m-0">
                 <p class="m-0">${competencia.competencia}</p>
             </li>
         `
     })
+}
+
+const buildCompetenciaListForTooltip = (competencias: Competencia[]) => {
+    const listItems = competencias.map(competencia => `<li>${competencia.competencia}</li>`).join('');
+    return `<ul>${listItems}</ul>`;
 }
 
 const buildSimpleCard = (item: Candidato | Vaga, itemsCurtidosDoLoggedUser: Curtida[]) => {
@@ -36,7 +41,12 @@ const buildSimpleCard = (item: Candidato | Vaga, itemsCurtidosDoLoggedUser: Curt
     }
 
     return `
-        <div class="card m-3 col-10 col-md-4 p-0 item-card" id="item-card-${item.id}">
+        <div 
+            role="button"
+            data-bs-toggle="popover"           
+            data-bs-title="Todas Competências"
+            class="card m-3 col-10 col-md-4 p-0 item-card" 
+            id="item-card-${item.id}">
           <div class="card-header d-flex justify-content-between">
             <div>
                 <img alt="robot image" class="rounded" style="height: 5rem; width: 5rem" src="https://robohash.org/${item.descricao}" />
@@ -60,4 +70,4 @@ const buildSimpleCard = (item: Candidato | Vaga, itemsCurtidosDoLoggedUser: Curt
     `
 }
 
-export {buildSimpleCard}
+export {buildSimpleCard, buildCompetenciaListForTooltip}
