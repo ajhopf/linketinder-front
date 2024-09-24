@@ -8,6 +8,7 @@ import {addEventListenersToRenderedInputs, removeEventListeners} from "./event-l
 import {ValidationErrors, validationErrors} from "./input-handlers";
 import {FormInvalidError} from "../../errors/registration-form-errors/form-invalid-error";
 import Competencia from "../../model/Competencia";
+import {competenciasInputBuilder} from "../shared/competencia-form-builder";
 
 interface Input {
     title: string;
@@ -59,6 +60,7 @@ const pageTitle = <HTMLTitleElement> document.getElementById("page-title");
 const toggleForm = () => {
     const isEmpresa = toggleUserTypeCheckbox.checked;
     let text;
+    userCompetencias.splice(0);
 
     if (isEmpresa) {
         text = 'Registro de Empresa';
@@ -95,38 +97,6 @@ const textInputBuilder = (input: Input): string => {
     </div>
    `
 };
-
-const competenciasInputBuilder = (registrationType: 'empresas' | 'candidatos'): string => {
-    return `
-    <div class="d-flex flex-column col-5">
-        <div>
-            <label for="competencia" class="form-label">Competencias</label>
-            <input type="text" id="competencia" class="form-control mb-3">
-             <div class="d-flex justify-content-center my-3">
-               <small hidden id="competencia-error-message" class="text-danger text-center">Erro ao adicionar competencia</small>
-            </div>
-        </div>
-        <div>
-            <label for="experiencia-competencia" class="form-label">Anos de Experiência</label>
-            <input type="number" step="0.5" id="experiencia-competencia" class="form-control mb-3">
-        </div>
-        <div>
-            <label>${registrationType === 'empresas' ? 'Importância para a Vaga (1 a 5)' : 'Nível de Afinidade (1 a 5)'}</label>
-            <input value="1" type="number" min="1" max="5" step="1" id="importancia-competencia" class="form-control mb-3">    
-        </div>
-       
-        <button type="button" id="competencia-btn" class="btn btn-outline-primary">Adicionar Competencia</button>
-    </div>
-    <div class="col-5 text-center">
-        <p class="mb-2">Lista de Competências Adicionadas</p>
-        <small>Clique em uma competência para removê-la da lista</small>
-        <ul id="competencias-list" class="list-group text-center">
-            
-        </ul>
-    </div>
-    
-    `
-}
 
 const buildRegistrationForm = () => {
     const inputContainer = <HTMLDivElement> document.getElementById("inputs-container");

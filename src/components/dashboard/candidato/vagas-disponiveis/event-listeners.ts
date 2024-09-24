@@ -1,34 +1,14 @@
-import {closeModal, handleMouseOverCard} from "../../empresa/candidatos/handlers";
-import {handleMouseOverVagaCard} from "./handlers";
+import {genericOpenAndPopulateModal} from "../../../shared/modal/modal-handlers";
+import { handleVagaCurtidaClick } from "./handlers";
 
 const addVagasCardsEventListeners = () => {
-    const cards = <HTMLCollectionOf<HTMLDivElement>> document.getElementsByClassName('vaga-card');
+    const cards = <HTMLCollectionOf<HTMLDivElement>> document.getElementsByClassName('item-card');
 
     for (let i = 0; i < cards.length; i++) {
         const card = cards[i];
 
-        card.addEventListener('mouseover', handleMouseOverVagaCard);
-    }
-
-    const closeModalBtn = <HTMLButtonElement> document.getElementById('close-candidato-modal-btn');
-    const modalBackground = <HTMLDivElement> document.getElementById('candidato-modal')
-    const modalCardContainer = <HTMLDivElement> document.getElementById('modal-card-container');
-
-    closeModalBtn.addEventListener('click', closeModal);
-    modalBackground.addEventListener('click', closeModal);
-    modalCardContainer.addEventListener('click', (event) => {
-        event.stopPropagation(); // Prevent the click from reaching the parent div
-    });
-}
-
-const removeVagasCardsEventListeners = () => {
-    const cards = <HTMLCollectionOf<HTMLDivElement>> document.getElementsByClassName('candidato-card');
-
-    for (let i = 0; i < cards.length; i++) {
-        const card = cards[i];
-        card.removeEventListener('mouseover', handleMouseOverCard);
+        card.addEventListener('mouseover', (event) => genericOpenAndPopulateModal(event, 'vaga', handleVagaCurtidaClick));
     }
 }
 
-
-export {addVagasCardsEventListeners, removeVagasCardsEventListeners}
+export {addVagasCardsEventListeners}

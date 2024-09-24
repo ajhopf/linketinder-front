@@ -2,6 +2,7 @@ import {competenciasExigidasParaVaga, handleAddCompetencia} from "./input-handle
 import {Vaga} from "../../../../model/Vaga";
 import {createVaga} from "../../../../service/vagas-service";
 import {genericHandleRemoveCompetencia} from "../../../shared/competencia-handlers";
+import {competenciasInputBuilder} from "../../../shared/competencia-form-builder";
 
 const buildVagaForm = () => {
     return `
@@ -18,43 +19,13 @@ const buildVagaForm = () => {
           </div>
           
           <div class="row">
-            ${competenciasInputBuilder()}
+            ${competenciasInputBuilder('empresas')}
           </div>
           <div class="d-flex justify-content-center mb-3">
             <small hidden id="form-error-message" class="text-danger text-center"></small>
           </div>
           <button type="submit" class="btn btn-primary w-100">Adicionar Vaga</button>
         </form>
-    `
-}
-
-const competenciasInputBuilder = (): string => {
-    return `
-    <div class="d-flex flex-column col-5">
-        <div>
-            <label for="competencia" class="form-label">Competencias</label>
-            <input type="text" id="competencia" class="form-control mb-3">
-        </div>
-        <div>
-            <div>
-                <label for="experiencia-competencia" class="form-label">Anos de Experiência Exigido</label>
-                <input type="number" step="0.5" id="experiencia-competencia" class="form-control mb-3" >
-            </div>
-            <div>
-                <label>Importância para a Vaga (1 a 5)</label>
-                <input value="1" type="number" min="1" max="5" step="1" id="importancia-competencia" class="form-control mb-3">    
-            </div>
-        </div>
-        <button type="button" id="competencia-btn" class="btn btn-outline-primary">Adicionar Competencia</button>
-    </div>
-    <div class="text-center col-5">
-        <p class="mb-2">Lista de Competências Adicionadas</p>
-        <small>Clique em uma competência para removê-la da lista</small>
-        <ul id="competencias-list" class="list-group text-center">
-            
-        </ul>
-    </div>
-    
     `
 }
 
@@ -123,7 +94,7 @@ const submitVaga = (event: SubmitEvent) => {
 }
 
 
-const addEventListeneresToVagaForm = () => {
+const addEventListenersToVagaForm = () => {
     const addCompetenciaBtn = <HTMLButtonElement> document.getElementById("competencia-btn");
 
     addCompetenciaBtn.addEventListener('click', () => {
@@ -134,4 +105,4 @@ const addEventListeneresToVagaForm = () => {
     form.addEventListener('submit', submitVaga);
 }
 
-export {buildVagaForm, competenciasInputBuilder, addEventListeneresToVagaForm, clearVagaForm}
+export {buildVagaForm, addEventListenersToVagaForm, clearVagaForm}
