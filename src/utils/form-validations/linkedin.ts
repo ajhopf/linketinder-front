@@ -2,7 +2,7 @@ import {LinkedinInvalidError} from "../../errors/registration-form-errors/linked
 
 const validateLinkedin = (linkedin: string) => {
     // https://www.linkedin.com/in/danielcostadev/
-    const pattern = /(https:\/\/)?(www\.)?linkedin\.com\/in\/\w+/
+    const pattern = /^(https:\/\/)?(www\.)?linkedin\.com\/in\/\w+$/
 
     if (!pattern.test(linkedin)) {
         throw new LinkedinInvalidError('O link do linkedin deve estar no seguinte formato: linkedin.com/in/seu-perfil')

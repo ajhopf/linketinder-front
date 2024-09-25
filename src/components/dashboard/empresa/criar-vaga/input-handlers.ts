@@ -1,12 +1,8 @@
-import {genericHandleAddCompetencia} from "../../../shared/competencia-handlers";
 import {validateDescricaoAndTitulo} from "../../../../utils/form-validations/descricao-titulo";
 import {getCurrentUser} from "../../../../service/user-service";
 import {criarVagaValidationErrors} from "./new-vaga-form";
 import {competenciasExigidasParaVaga} from "./new-vaga-form";
 
-const handleAddCompetencia = () => {
-    genericHandleAddCompetencia(competenciasExigidasParaVaga);
-}
 
 const handleTituloAndDescricaoBlur = (type: 'titulo' | 'descricao') => {
     const currentUser = getCurrentUser();
@@ -29,4 +25,4 @@ const handleTituloAndDescricaoBlur = (type: 'titulo' | 'descricao') => {
     }
 }
 
-export {handleAddCompetencia, handleTituloAndDescricaoBlur, competenciasExigidasParaVaga}
+export {handleTituloAndDescricaoBlur, competenciasExigidasParaVaga}

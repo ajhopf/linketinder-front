@@ -4,11 +4,11 @@ import Endereco from "../../model/Endereco";
 import Empresa from "../../model/Empresa";
 import Candidato from "../../model/Candidato";
 import {EmailInUseError} from "../../errors/registration-form-errors/email-in-use-error";
-import {addEventListenersToRenderedInputs, removeEventListeners} from "./event-listeners";
-import {ValidationErrors, validationErrors} from "./input-handlers";
+import {addEventListenersToRenderedInputs, removeEventListeners} from "./registration-event-listeners";
+import {ValidationErrors, validationErrors} from "./registration-input-handlers";
 import {FormInvalidError} from "../../errors/registration-form-errors/form-invalid-error";
 import Competencia from "../../model/Competencia";
-import {competenciasInputBuilder} from "../shared/competencia-form-builder";
+import {competenciasInputBuilder} from "../shared/competencia-form/competencia-form-builder";
 
 interface Input {
     title: string;

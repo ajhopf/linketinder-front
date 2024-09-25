@@ -1,5 +1,4 @@
 import {validateAndFormatCnpj, validateAndFormatCpf} from "../../utils/form-validations/cpf-cnpj";
-import {userCompetencias} from "./registration-form";
 import {validateCandidatoNome, validateEmpresaNome} from "../../utils/form-validations/nome";
 import {validateEmail} from "../../utils/form-validations/email";
 import {searchCep} from "../../utils/via-cep";
@@ -9,7 +8,6 @@ import {validateLinkedin} from "../../utils/form-validations/linkedin";
 import {validateAndFormatCep} from "../../utils/form-validations/cep";
 import {validateDescricaoAndTitulo} from "../../utils/form-validations/descricao-titulo";
 import {validateIdade} from "../../utils/form-validations/idade";
-import {genericHandleAddCompetencia} from "../shared/competencia-handlers";
 
 interface ValidationErrors {
     nome: boolean,
@@ -34,7 +32,7 @@ const validationErrors: ValidationErrors = {
     senha: true,
     telefone: true,
     linkedin: true,
-    descricao: true
+    descricao: true,
 }
 
 type GenericHandlerIdentifier = 'nome' | 'email' | 'cep' | 'cpf' | 'cnpj' | 'idade' | 'senha' | 'telefone' | 'linkedin' | 'descricao'
@@ -42,7 +40,6 @@ type GenericHandlerIdentifier = 'nome' | 'email' | 'cep' | 'cpf' | 'cnpj' | 'ida
 const genericHandler = (identifier: GenericHandlerIdentifier, validationFn: (param: string) => void | string) => {
     const input = <HTMLInputElement> document.getElementById(identifier);
     const inputError = <HTMLElement> document.getElementById(`${identifier}-error-message`);
-
     try {
         const fnReturn = validationFn(input.value);
 
@@ -171,11 +168,6 @@ const handleDescricaoBlur = () => {
     }
 }
 
-
-const handleAddCompetencia = () => {
-    genericHandleAddCompetencia(userCompetencias);
-}
-
 export {
     genericHandler,
     handleNomeBlur,
@@ -188,7 +180,6 @@ export {
     handleCpfBlur,
     handleCnpjBlur,
     handleIdadeBlur,
-    handleAddCompetencia,
     validationErrors,
     ValidationErrors
 }

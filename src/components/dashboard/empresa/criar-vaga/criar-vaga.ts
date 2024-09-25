@@ -5,7 +5,7 @@ const buildCriarVagaInnerContent = () => {
     return `
         <div>
             <h1 class="text-center my-5">Criar vaga</h1>
-            ${buildVagaForm()}        
+            ${buildVagaForm()}           
         </div>
     `
 }

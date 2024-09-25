@@ -1,10 +1,11 @@
 import {
-    handleAddCompetencia,
     handleCepBlur,
     handleCnpjBlur,
     handleCpfBlur, handleDescricaoBlur, handleEmailBlur, handleIdadeBlur, handleLinkedinBlur, handleNomeBlur,
     handleSenhaBlur, handleTelefoneBlur
-} from "./input-handlers";
+} from "./registration-input-handlers";
+import {handleAddCompetencia} from "../shared/competencia-form/competencia-handlers";
+import {userCompetencias} from "./registration-form";
 
 const getInputs = () => {
     const nomeInput = <HTMLInputElement> document.getElementById('nome');
@@ -24,7 +25,20 @@ const getInputs = () => {
 }
 
 const addEventListenersToRenderedInputs = () => {
-    const {nomeInput, descricaoInput, emailInput, cpfInput, cnpjInput, idadeInput, cepInput, telefoneInput, linkedinInput, confirmeSenhaInput, senhaInput, competenciaBtn } = getInputs();
+    const {
+        nomeInput,
+        descricaoInput,
+        emailInput,
+        cpfInput,
+        cnpjInput,
+        idadeInput,
+        cepInput,
+        telefoneInput,
+        linkedinInput,
+        confirmeSenhaInput,
+        senhaInput,
+        competenciaBtn
+    } = getInputs();
 
     nomeInput && nomeInput.addEventListener('blur', handleNomeBlur);
 
@@ -47,11 +61,24 @@ const addEventListenersToRenderedInputs = () => {
     senhaInput.addEventListener('blur', handleSenhaBlur);
     confirmeSenhaInput.addEventListener('blur', handleSenhaBlur);
 
-    competenciaBtn.addEventListener('click', handleAddCompetencia);
+    competenciaBtn.addEventListener('click', () => handleAddCompetencia(userCompetencias));
 }
 
 const removeEventListeners = () => {
-    const {nomeInput, descricaoInput, emailInput, cpfInput, cnpjInput, idadeInput, cepInput, telefoneInput, linkedinInput, confirmeSenhaInput, senhaInput, competenciaBtn } = getInputs();
+    const {
+        nomeInput,
+        descricaoInput,
+        emailInput,
+        cpfInput,
+        cnpjInput,
+        idadeInput,
+        cepInput,
+        telefoneInput,
+        linkedinInput,
+        confirmeSenhaInput,
+        senhaInput,
+        competenciaBtn
+    } = getInputs();
 
     nomeInput && nomeInput.removeEventListener('blur', handleNomeBlur);
 
@@ -74,7 +101,7 @@ const removeEventListeners = () => {
     senhaInput && senhaInput.removeEventListener('blur', handleSenhaBlur);
     confirmeSenhaInput && confirmeSenhaInput.removeEventListener('blur', handleSenhaBlur);
 
-    competenciaBtn && competenciaBtn.removeEventListener('click', handleAddCompetencia);
+    competenciaBtn && competenciaBtn.removeEventListener('click', () => handleAddCompetencia(userCompetencias));
 }
 
 export {addEventListenersToRenderedInputs, removeEventListeners}

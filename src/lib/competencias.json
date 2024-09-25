@@ -1,0 +1,28 @@
+{
+  "competencias": [
+    {
+      "category": "Programming Languages",
+      "tags": ["Java", "JavaScript", "Python", "C#", "C++", "PHP", "Ruby", "Go", "Swift", "Kotlin", "Rust", "TypeScript"]
+    },
+    {
+      "category": "Frontend Technologies",
+      "tags": ["HTML", "CSS", "React", "Angular", "Vue.js", "jQuery", "Bootstrap", "Tailwind CSS", "Svelte", "Ember.js"]
+    },
+    {
+      "category": "Backend Technologies",
+      "tags": ["Node.js", "Express.js", "Django", "Flask", "Ruby on Rails", "Spring Boot", "ASP.NET Core", "Laravel", "Symfony"]
+    },
+    {
+      "category": "Databases",
+      "tags": ["MySQL", "PostgreSQL", "MongoDB", "SQLite", "Oracle", "Microsoft SQL Server", "Redis", "Cassandra", "Firebase"]
+    },
+    {
+      "category": "Cloud Platforms",
+      "tags": ["AWS", "Azure", "Google Cloud Platform", "Heroku", "DigitalOcean"]
+    },
+    {
+      "category": "Other",
+      "tags": ["Git", "Docker", "Kubernetes", "Linux", "Apache", "Nginx", "Jenkins", "Ansible", "Terraform"]
+    }
+  ]
+}

@@ -1,8 +1,9 @@
 import {Vaga} from "../../../../model/Vaga";
 import {createVaga} from "../../../../service/vagas-service";
-import {competenciasInputBuilder} from "../../../shared/competencia-form-builder";
+import {competenciasInputBuilder} from "../../../shared/competencia-form/competencia-form-builder";
 import {FormInvalidError} from "../../../../errors/registration-form-errors/form-invalid-error";
 import Competencia from "../../../../model/Competencia";
+import {Toast} from "bootstrap";
 
 interface CriarVagaValidationErrors {
     descricao: boolean,
@@ -18,32 +19,46 @@ const competenciasExigidasParaVaga: Competencia[] = [];
 
 const buildVagaForm = () => {
     return `
-        <form id="vaga-form" class="mb-3">
-          <div class="row">
-              <div class="mb-3 col-5">
-                <label for="titulo" class="form-label">Título da Vaga</label>
-                <input name="titulo" id="titulo" type="text" class="form-control"  required/>
-                <div class="d-flex justify-content-center mb-3">
-                   <small hidden id="titulo-error-message" class="text-danger text-center"></small>
-                </div>
+        <div class="row justify-content-center">
+            <form id="vaga-form" class="mb-3 col-12">
+              <div class="row justify-content-center">
+                  <div class="mb-3 col-5">
+                    <label for="titulo" class="form-label">Título da Vaga</label>
+                    <input name="titulo" id="titulo" type="text" class="form-control"  required/>
+                    <div class="d-flex justify-content-center mb-3">
+                       <small hidden id="titulo-error-message" class="text-danger text-center"></small>
+                    </div>
+                  </div>
+                  <div class="mb-3 col-5">
+                    <label for="descricao"  class="form-label">Descrição da Vaga</label>
+                    <textarea name="descricao" id="descricao" type="text" class="form-control" required> </textarea>
+                    <div class="d-flex justify-content-center mb-3">
+                       <small hidden id="descricao-error-message" class="text-danger text-center"></small>
+                    </div>
+                  </div>
               </div>
-              <div class="mb-3 col-5">
-                <label for="descricao"  class="form-label">Descrição da Vaga</label>
-                <textarea name="descricao" id="descricao" type="text" class="form-control" required> </textarea>
-                <div class="d-flex justify-content-center mb-3">
-                   <small hidden id="descricao-error-message" class="text-danger text-center"></small>
-                </div>
+              
+              <div class="row justify-content-center">
+                ${competenciasInputBuilder('empresas')}
               </div>
-          </div>
-          
-          <div class="row">
-            ${competenciasInputBuilder('empresas')}
-          </div>
-          <div class="d-flex justify-content-center mb-3">
-            <small hidden id="form-error-message" class="text-danger text-center"></small>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Adicionar Vaga</button>
-        </form>
+              <div class="d-flex justify-content-center mb-3">
+                <small hidden id="form-error-message" class="text-danger text-center"></small>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Adicionar Vaga</button>
+            </form>
+        </div>
+        <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+            <div id="vaga-criada-toast"  class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="toast-header">
+                <strong class="me-auto">Vaga criada com sucesso</strong>       
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+              <div class="toast-body">
+                <p id="toast-text text-white"></p>
+              </div>
+            </div>
+        </div>
+        
     `
 }
 
@@ -105,6 +120,14 @@ const submitVaga = (event: SubmitEvent) => {
         }
 
         createVaga(vaga);
+
+        const toastEl = <HTMLDivElement> document.getElementById('vaga-criada-toast');
+        const toastText = <HTMLParagraphElement> document.getElementById('toast-text');
+        toastText.innerText = "Título da vaga criada: " + vaga.titulo;
+
+        const toast = new Toast(toastEl);
+        toast.show();
+
         clearVagaForm();
     } catch (e) {
         if (e instanceof FormInvalidError) {

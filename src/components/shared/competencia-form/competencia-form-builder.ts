@@ -1,9 +1,25 @@
+import {allCompetencias} from "../../../lib/competencias-list";
+
+const dataList = () => {
+    return `
+        <datalist id="competencias-data-list">
+            ${allCompetencias.map(competencia => {
+                return `<option value=${competencia}></option>`
+            }).join('')}
+        </datalist>
+    `
+}
+
 const competenciasInputBuilder = (registrationType: 'empresas' | 'candidatos'): string => {
     return `
     <div class="d-flex flex-column col-5">
         <div>
             <label for="competencia" class="form-label">Competencias</label>
-            <input type="text" id="competencia" class="form-control mb-3">
+            <input autocomplete="off" type="text" id="competencia" list="competencias-data-list" class="form-control mb-3">
+            ${dataList()}
+            <div class="d-flex justify-content-center my-3">
+               <small hidden id="competencia-error-message" class="text-danger text-center">Escolha uma competência que esteja na lista</small>
+            </div>
         </div>
         <div>
             <div>
