@@ -13,7 +13,7 @@ const validateCandidatoNome = (nome: string) => {
 }
 
 const validateEmpresaNome = (nome: string) => {
-    const pattern = /^\w{2,}$/
+    const pattern = /^\w{2,}/
 
     if (!pattern.test(nome)) {
         throw new NomeInvalidError('O nome deve conter ao menos 2 caracteres.')

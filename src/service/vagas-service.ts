@@ -1,5 +1,6 @@
 import {Vaga} from "../model/Vaga";
 import {VagaNotFoundError} from "../errors/vaga-not-found-error";
+import {removeAllCurtidasDeUmaVaga} from "./curtida-service";
 
 const getAllVagas = (): Vaga[] => {
     const vagasString = localStorage.getItem("vagas");
@@ -48,13 +49,18 @@ const getVagasDaEmpresa = (empresaId: number): Vaga[] => {
 
 const deleteVaga = (vagaId: number) => {
     const vagasString = localStorage.getItem("vagas");
+    console.log('vaga id aqui', vagaId)
 
     if (vagasString) {
         const todasVagas = <Vaga[]> JSON.parse(vagasString);
 
+        console.log('vagaId no deleteVaga', vagaId);
+
         const vagaIdx = todasVagas.findIndex(vaga => vaga.id === vagaId);
 
         todasVagas.splice(vagaIdx, 1);
+
+        removeAllCurtidasDeUmaVaga(vagaId);
 
         localStorage.setItem("vagas", JSON.stringify(todasVagas));
     }

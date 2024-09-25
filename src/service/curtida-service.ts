@@ -26,6 +26,23 @@ const getCurtidasDoCurrentUser = (currentLoggedUser: UsuarioLogado) => {
     return curtidasDoUsuario;
 }
 
+const removeAllCurtidasDeUmaVaga = (vagaId: number) => {
+    const curtidasString = localStorage.getItem('vagasCurtida');
+
+    let curtidas: CurtidaEmVaga[] = [];
+
+    if (curtidasString) {
+        curtidas = <CurtidaEmVaga[]> JSON.parse(curtidasString);
+
+        console.log('vaga id: ', vagaId);
+
+        const curtidasFiltradas =  curtidas.filter(curtida => curtida.vagaId !== vagaId);
+
+        console.log(curtidasFiltradas)
+
+        localStorage.setItem('vagasCurtida', JSON.stringify(curtidasFiltradas));
+    }
+}
 
 const addCurtida = <T extends Curtida> (newCurtida: T, storageKey: 'candidatosCurtida' | 'vagasCurtida') => {
     const curtidasString = localStorage.getItem(storageKey);
@@ -70,4 +87,4 @@ const removeCurtida = (curtidaId: number, storageKey: 'candidatosCurtida' | 'vag
     }
 }
 
-export {addCurtida, removeCurtida, getCurtidasDoCurrentUser}
+export {addCurtida, removeCurtida, removeAllCurtidasDeUmaVaga, getCurtidasDoCurrentUser}

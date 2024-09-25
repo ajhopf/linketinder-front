@@ -10,7 +10,7 @@
     },
     {
       "category": "Backend Technologies",
-      "tags": ["Node.js", "Express.js", "Django", "Flask", "Ruby on Rails", "Spring Boot", "ASP.NET Core", "Laravel", "Symfony"]
+      "tags": ["Node.js", "Express.js", "Django", "Groovy", "Flask", "Ruby on Rails", "Spring Boot", "ASP.NET Core", "Laravel", "Symfony"]
     },
     {
       "category": "Databases",
@@ -22,7 +22,7 @@
     },
     {
       "category": "Other",
-      "tags": ["Git", "Docker", "Kubernetes", "Linux", "Apache", "Nginx", "Jenkins", "Ansible", "Terraform"]
+      "tags": ["Git", "Docker", "React Native", "Kubernetes", "Linux", "Apache", "Nginx", "Jenkins", "Ansible", "Terraform", "Unreal Engine"]
     }
   ]
 }
