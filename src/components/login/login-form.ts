@@ -1,9 +1,11 @@
 import {loginUser} from "../../service/user-service";
+import {populate} from "../../utils/populate-local-storage";
 
 const loginForm = <HTMLFormElement> document.getElementById('login-form');
 const toggleUserTypeCheckbox = <HTMLInputElement> document.getElementById("toggle-user-type-checkbox");
 const toggleUserTypeLabel = <HTMLLabelElement> document.getElementById("toggle-user-type-label");
 const formErrorMessage = <HTMLElement>document.getElementById("form-error-message");
+const popularLocalStorageBtn = <HTMLButtonElement> document.getElementById("populate-storage");
 
 const toggleForm = () => {
     const isEmpresa = toggleUserTypeCheckbox.checked;
@@ -33,3 +35,4 @@ const submitLoginForm = (e: SubmitEvent) => {
 
 loginForm.addEventListener('submit', submitLoginForm);
 toggleUserTypeCheckbox.addEventListener('change', toggleForm)
+popularLocalStorageBtn.addEventListener('click', populate);

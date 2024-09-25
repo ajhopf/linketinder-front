@@ -3,7 +3,7 @@ import Empresa from "../model/Empresa";
 import Candidato from "../model/Candidato";
 import {comparePassword, hashPassword} from "../utils/bcrypt";
 import {WrongCredentialsError} from "../errors/wrong-credentials-error";
-import {EmailInUseError} from "../errors/email-in-use-error";
+import {EmailInUseError} from "../errors/registration-form-errors/email-in-use-error";
 import {UserNotFoundError} from "../errors/user-not-found-error";
 
 const getCurrentUser = (): UsuarioLogado => {

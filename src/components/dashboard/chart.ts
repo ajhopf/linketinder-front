@@ -16,7 +16,7 @@ const buildChartComponent = (title: string) => {
         <div class="d-flex flex-column align-items-center justify-content-center">
             <h1>${title}</h1>
             <div style="width: 800px;">
-                <canvas id="acquisitions"></canvas>
+                <canvas id="chart-canvas"></canvas>
             </div>
         </div>
     `
@@ -35,9 +35,6 @@ const colorsHover = ['rgb(255, 99, 132)',
     'rgb(54, 162, 235)',]
 
 const addChart = async (items: Candidato[] | Vaga[], tooltipLabel: string) => {
-
-
-
     const categorias: {categoria: string, contagem: number}[] = [];
 
     items.forEach(item => {
@@ -52,7 +49,7 @@ const addChart = async (items: Candidato[] | Vaga[], tooltipLabel: string) => {
         })
     })
 
-    const canvas = <HTMLCanvasElement> document.getElementById('acquisitions')
+    const canvas = <HTMLCanvasElement> document.getElementById('chart-canvas')
 
     new Chart(canvas,
         {

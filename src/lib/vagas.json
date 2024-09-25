@@ -1,0 +1,147 @@
+{
+  "vagas": [
+    {
+      "id": 0,
+      "titulo": "Desenvolvedor Front-end React",
+      "descricao": "Procuramos um desenvolvedor front-end com experiência em React para criar interfaces de usuário incríveis.",
+      "competencias": [
+        { "competencia": "React", "anosExperiencia": 2, "importancia": 5 },
+        { "competencia": "JavaScript", "anosExperencia": 3, "importancia": 4 },
+        { "competencia": "HTML", "anosExperencia": 3, "importancia": 4 }
+      ],
+      "empresaId": 0
+    },
+    {
+      "id": 1,
+      "titulo": "Engenheiro de Dados Python",
+      "descricao": "Estamos buscando um engenheiro de dados talentoso para construir e manter nossos pipelines de dados.",
+      "competencias": [
+        { "competencia": "Python", "anosExperiencia": 3, "importancia": 5 },
+        { "competencia": "SQL", "anosExperiencia": 2, "importancia": 4 },
+        { "competencia": "AWS", "anosExperencia": 1, "importancia": 3 }
+      ],
+      "empresaId": 1
+    },
+    {
+      "id": 2,
+      "titulo": "Desenvolvedor Back-end Node.js",
+      "descricao": "Junte-se à nossa equipe e ajude a construir APIs robustas e escaláveis usando Node.js.",
+      "competencias": [
+        { "competencia": "Node.js", "anosExperiencia": 2, "importancia": 5 },
+        { "competencia": "Express.js", "anosExperiencia": 2, "importancia": 4 },
+        { "competencia": "MongoDB", "anosExperiencia": 1, "importancia": 3 }
+      ],
+      "empresaId": 2
+    },
+    {
+      "id": 3,
+      "titulo": "Desenvolvedor Mobile Android (Kotlin)",
+      "descricao": "Crie aplicativos Android incríveis com Kotlin e participe do desenvolvimento de nossos produtos inovadores.",
+      "competencias": [
+        { "competencia": "Kotlin", "anosExperencia": 2, "importancia": 5 },
+        { "competencia": "ASP.NET Core", "anosExperencia": 2, "importancia": 4 },
+        { "competencia": "Git", "anosExperencia": 1, "importancia": 3 }
+      ],
+      "empresaId": 3
+    },
+    {
+      "id": 4,
+      "titulo": "Especialista em DevOps",
+      "descricao": "Automatize e otimize nossos processos de desenvolvimento e implantação. Conhecimento em Kubernetes é essencial.",
+      "competencias": [
+        { "competencia": "Kubernetes", "anosExperencia": 2, "importancia": 5 },
+        { "competencia": "Docker", "anosExperencia": 3, "importancia": 4 },
+        { "competencia": "Linux", "anosExperencia": 3, "importancia": 4 }
+      ],
+      "empresaId": 4
+    },
+    {
+      "id": 5,
+      "titulo": "Desenvolvedor Full-stack Java/Angular",
+      "descricao": "Buscamos um desenvolvedor full-stack experiente para trabalhar em projetos desafiadores.",
+      "competencias": [
+        { "competencia": "Java", "anosExperencia": 4, "importancia": 5 },
+        { "competencia": "Spring Boot", "anosExperencia": 3, "importancia": 4 },
+        { "competencia": "Angular", "anosExperencia": 2, "importancia": 3 }
+      ],
+      "empresaId": 5
+    },
+    {
+      "id": 6,
+      "titulo": "Desenvolvedor de Jogos C++",
+      "descricao": "Apaixonado por jogos? Junte-se a nós e crie experiências incríveis com C++.",
+      "competencias": [
+        { "competencia": "C++", "anosExperencia": 3, "importancia": 5 },
+        { "competencia": "Unreal Engine", "anosExperencia": 2, "importancia": 4 }
+      ],
+      "empresaId": 6
+    },
+    {
+      "id": 7,
+      "titulo": "Cientista de Dados",
+      "descricao": "Explore o mundo dos dados e ajude-nos a extrair insights valiosos. Python e habilidades em aprendizado de máquina são fundamentais.",
+      "competencias": [
+        { "competencia": "Python", "anosExperencia": 4, "importancia": 5 },
+        { "competencia": "Django", "anosExperencia": 2, "importancia": 4 },
+        { "competencia": "Angular", "anosExperencia": 3, "importancia": 3 },
+        { "competencia": "AWS", "anosExperencia": 3, "importancia": 3 }
+      ],
+      "empresaId": 7
+    },
+    {
+      "id": 8,
+      "titulo": "Analista de Segurança da Informação",
+      "descricao": "Proteja nossos sistemas e dados contra ameaças cibernéticas. Experiência em testes de penetração é um diferencial.",
+      "competencias": [
+        { "competencia": "Django", "anosExperencia": 2, "importancia": 4 },
+        { "competencia": "Linux", "anosExperencia": 3, "importancia": 3 },
+        { "competencia": "Python", "anosExperiência": 2, "importancia": 3 }
+      ],
+      "empresaId": 8
+    },
+    {
+      "id": 9,
+      "titulo": "Desenvolvedor PHP (Laravel)",
+      "descricao": "Crie aplicações web robustas e escaláveis com Laravel. Conhecimento em comércio eletrônico é um plus.",
+      "competencias": [
+        { "competencia": "PHP", "anosExperencia": 3, "importancia": 5 },
+        { "competencia": "Laravel", "anosExperencia": 2, "importancia": 4 },
+        { "competencia": "MySQL", "anosExperencia": 2, "importancia": 3 }
+      ],
+      "empresaId": 9
+    },
+    {
+      "id": 10,
+      "titulo": "Engenheiro de Software Python",
+      "descricao": "Desenvolva soluções inovadoras para um futuro mais sustentável. Paixão por tecnologia verde é essencial.",
+      "competencias": [
+        { "competencia": "Python", "anosExperencia": 3, "importancia": 5 },
+        { "competencia": "Django", "anosExperencia": 2, "importancia": 4 }
+      ],
+      "empresaId": 0
+    },
+    {
+      "id": 11,
+      "titulo": "Analista de Dados Júnior",
+      "descricao": "Ajude-nos a transformar dados em informações valiosas. Conhecimento em SQL e ferramentas de visualização é desejável.",
+      "competencias": [
+        { "competencia": "SQL", "anosExperencia": 1, "importancia": 4 },
+        { "competencia": "Python", "anosExperencia": 2, "importancia": 3 }
+      ],
+      "empresaId": 1
+    },
+    {
+      "id": 12,
+      "titulo": "Desenvolvedor Front-end Vue.js",
+      "descricao": "Crie interfaces de usuário modernas e responsivas com Vue.js. Experiência em UI/UX é um diferencial.",
+      "competencias": [
+        { "competencia": "Vue.js", "anosExperencia": 2, "importancia": 5 },
+        { "competencia": "JavaScript", "anosExperencia": 3, "importancia": 4 },
+        { "competencia": "TypeScript", "anosExperencia": 1, "importancia": 3 },
+        { "competencia": "Bootstrap", "anosExperencia": 1, "importancia": 3 },
+        { "competencia": "React", "anosExperencia": 1, "importancia": 5 }
+      ],
+      "empresaId": 2
+    }
+  ]
+}
