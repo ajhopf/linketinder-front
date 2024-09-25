@@ -1,4 +1,5 @@
-import {addEventListenersToVagaForm, buildVagaForm} from "./new-vaga-form";
+import {buildVagaForm} from "./new-vaga-form";
+import {addEventListenersToVagaForm} from "./event-listeners";
 
 const buildCriarVagaInnerContent = () => {
     return `

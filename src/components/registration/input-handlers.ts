@@ -7,7 +7,7 @@ import {validateSenha} from "../../utils/form-validations/senha";
 import {validateAndFormatTelefone} from "../../utils/form-validations/telefone";
 import {validateLinkedin} from "../../utils/form-validations/linkedin";
 import {validateAndFormatCep} from "../../utils/form-validations/cep";
-import {validateDescricao} from "../../utils/form-validations/descricao";
+import {validateDescricaoAndTitulo} from "../../utils/form-validations/descricao-titulo";
 import {validateIdade} from "../../utils/form-validations/idade";
 import {genericHandleAddCompetencia} from "../shared/competencia-handlers";
 
@@ -21,7 +21,7 @@ interface ValidationErrors {
     senha: boolean,
     telefone: boolean,
     linkedin: boolean,
-    descricao: boolean
+    descricao: boolean,
 }
 
 const validationErrors: ValidationErrors = {
@@ -156,7 +156,7 @@ const handleDescricaoBlur = () => {
     const descricaoError = <HTMLElement> document.getElementById('descricao-error-message')
 
     try {
-        validateDescricao(nomeInput.value, descricaoInput.value);
+        validateDescricaoAndTitulo(nomeInput.value, descricaoInput.value);
 
         if (!descricaoError.hasAttribute('hidden')) {
             descricaoError.setAttribute('hidden', 'true');
@@ -177,6 +177,7 @@ const handleAddCompetencia = () => {
 }
 
 export {
+    genericHandler,
     handleNomeBlur,
     handleEmailBlur,
     handleSenhaBlur,
