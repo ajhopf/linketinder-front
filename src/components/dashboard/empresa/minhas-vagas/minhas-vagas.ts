@@ -38,9 +38,13 @@ const addDeleteVagaClickHandlers = () => {
         const vagaId = deleteButton.id.split('-')[2];
 
         deleteButton.addEventListener('click', () => {
-            deleteVaga(Number(deleteButton.id));
-            const vagaCard = <HTMLElement> document.getElementById(`vaga-card-${vagaId}`)
-            vagaCard.remove();
+            try {
+                deleteVaga(Number(vagaId));
+                const vagaCard = <HTMLElement> document.getElementById(`vaga-card-${vagaId}`)
+                vagaCard.remove();
+            } catch (error) {
+                alert('Não foi possível deletar a vaga!')
+            }
         })
     }
 }

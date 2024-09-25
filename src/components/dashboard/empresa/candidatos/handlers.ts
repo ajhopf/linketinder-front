@@ -1,49 +1,11 @@
 import {addCurtida, removeCurtida} from "../../../../service/curtida-service";
 import {CurtidaEmCandidato} from "../../../../model/Curtida";
-import {getCurrentUser, getUserById} from "../../../../service/user-service";
+import {getCurrentUser} from "../../../../service/user-service";
 import {candidatosCurtidos, updateLocalCurtidas} from "./candidatos";
-import Candidato from "../../../../model/Candidato";
-import {buildCandidatoModalCard} from "./modal";
 
-const handleMouseOverCard = (event: MouseEvent) => {
-    const modal = <HTMLDivElement> document.getElementById("candidato-modal");
-    const modalCardContent = <HTMLDivElement> document.getElementById('modal-card-content')
-    const body = <HTMLBodyElement> document.getElementById('dashboard-body')
-    const curtidaBtn = document.getElementById('curtir-candidato')
-
-    if (curtidaBtn) {
-        curtidaBtn.removeEventListener('click', handleCurtidaClick);
-    }
-
-    body.classList.add('no-scroll');
-    modal.classList.remove('hide-modal');
-    modal.classList.add('show-modal');
-
-    if (event.currentTarget) {
-        const candidatoDiv = <HTMLDivElement> event.currentTarget;
-        const candidatoId = candidatoDiv.id.split('-')[2]
-
-        const candidato: Candidato = getUserById(Number(candidatoId), 'candidatos')
-
-        modalCardContent.innerHTML = buildCandidatoModalCard(candidato);
-
-        const curtidaBtn = document.getElementById('curtir-candidato')
-        curtidaBtn?.addEventListener('click', handleCurtidaClick);
-    }
-}
-
-const closeModal = () => {
-    const modal = <HTMLDivElement> document.getElementById("candidato-modal");
-    const body = <HTMLBodyElement> document.getElementById('dashboard-body')
-
-    body.classList.remove('no-scroll');
-    modal.classList.remove('show-modal');
-    modal.classList.add('hide-modal');
-}
-
-const handleCurtidaClick = () => {
-    const curtidaBtn = <HTMLButtonElement> document.getElementById('curtir-candidato')
-    const candidatoId = curtidaBtn.getAttribute('data-candidato-id');
+const handleCandidatoCurtidaClick = () => {
+    const curtidaBtn = <HTMLButtonElement> document.getElementById('modal-curtir-btn')
+    const candidatoId = curtidaBtn.getAttribute('data-item-id');
 
     if (candidatoId) {
         const curtidaIdx = candidatosCurtidos.findIndex(curtida => curtida.candidatoId === Number(candidatoId));
@@ -64,7 +26,8 @@ const handleCurtidaClick = () => {
                 empresaId: getCurrentUser().id,
                 candidatoId: Number(candidatoId)
             }
-            addCurtida(curtida, 'candidatosCurtida');
+
+            addCurtida<CurtidaEmCandidato>(curtida, 'candidatosCurtida');
 
             const curtidaIcones = <HTMLCollectionOf<HTMLImageElement>> document.getElementsByClassName(`curtida-icone-${candidatoId}`)
 
@@ -78,4 +41,4 @@ const handleCurtidaClick = () => {
 
 }
 
-export {handleMouseOverCard, closeModal, handleCurtidaClick}
+export {handleCandidatoCurtidaClick}

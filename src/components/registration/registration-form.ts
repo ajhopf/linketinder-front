@@ -3,16 +3,18 @@ import {Usuario} from "../../model/Usuario";
 import Endereco from "../../model/Endereco";
 import Empresa from "../../model/Empresa";
 import Candidato from "../../model/Candidato";
-import {EmailInUseError} from "../../errors/email-in-use-error";
-import {addEventListenersToRenderedInputs, removeEventListeners} from "./event-listeners";
-import {ValidationErrors, validationErrors} from "./input-handlers";
-import {FormInvalidError} from "../../errors/form-invalid-error";
+import {EmailInUseError} from "../../errors/registration-form-errors/email-in-use-error";
+import {addEventListenersToRenderedInputs, removeEventListeners} from "./registration-event-listeners";
+import {ValidationErrors, validationErrors} from "./registration-input-handlers";
+import {FormInvalidError} from "../../errors/registration-form-errors/form-invalid-error";
 import Competencia from "../../model/Competencia";
+import {competenciasInputBuilder} from "../shared/competencia-form/competencia-form-builder";
 
 interface Input {
     title: string;
     id: string;
     type: string;
+    placeholder?: string;
     error?: string;
     minlength?: string;
     maxlength?: string;
@@ -20,16 +22,17 @@ interface Input {
 }
 
 const defaultInputs: Input[] = [
-    { title: 'Nome', id: 'nome', type: 'text'},
-    { title: 'Email', id:'email', type: 'email', error: 'Email já está em uso'},
+    { title: 'Nome', id: 'nome', type: 'text', placeholder: "Nome Sobrenome",error: 'Nome deve conter mais de 2 caracteres e conter apenas letras'},
+    { title: 'Email', id:'email', type: 'email', placeholder: "email@email.com", error: 'Email já está em uso'},
     { title: 'Senha', id:'senha', type: 'password', minlength: '6'},
     { title: 'Confirme a senha', id:'confirme-senha', type: 'password',  error: 'As senhas devem ser iguais!'},
-    { title: 'Descrição', id: 'descricao', type: 'text-area'},
+    { title: 'Descrição', id: 'descricao', type: 'text', placeholder: "Preencha seu nome primeiro", readonly: true},
     {
         title: 'Cep',
         id: 'cep',
         type: 'text',
         maxlength: '9',
+        placeholder: "99999-999",
         error: 'Cep inválido'
     },
     { title: 'Estado', id: 'estado', type: 'text', readonly: true },
@@ -37,12 +40,14 @@ const defaultInputs: Input[] = [
 ];
 
 const candidatoInputs: Input[] = [
-    {title: 'Cpf', id: 'cpf', type: 'text', minlength: '11', maxlength: '14', error: 'Cpf inválido'},
-    {title: 'Idade', id: 'idade', type: 'text'}
+    {title: 'Cpf', id: 'cpf', type: 'text', placeholder: "123.456.789-00", minlength: '11', maxlength: '14', error: 'Cpf inválido'},
+    {title: 'Idade', id: 'idade', type: 'number'},
+    {title: 'Telefone', id: 'telefone', placeholder: "(99) 99999-9999", type: 'text'},
+    {title: 'Linkedin', id: 'linkedin', placeholder: "linkedin.com/in/seu-perfil",type: 'text'},
 ]
 
 const empresaInputs: Input[] = [
-    {title: 'Cnpj', id: 'cnpj', type: 'text', minlength: '14', maxlength: '18', error: 'Cnpj inválido'},
+    {title: 'Cnpj', id: 'cnpj', type: 'text', placeholder: "12.345.678/9123-45", minlength: '14', maxlength: '18', error: 'Cnpj inválido'},
 ]
 
 const userCompetencias: Competencia[] = [];
@@ -55,6 +60,7 @@ const pageTitle = <HTMLTitleElement> document.getElementById("page-title");
 const toggleForm = () => {
     const isEmpresa = toggleUserTypeCheckbox.checked;
     let text;
+    userCompetencias.splice(0);
 
     if (isEmpresa) {
         text = 'Registro de Empresa';
@@ -80,6 +86,7 @@ const textInputBuilder = (input: Input): string => {
             name=${input.id} 
             class="form-control" 
             required
+            ${input.placeholder && 'placeholder="'+input.placeholder+'"'}
             ${input.maxlength && 'maxlength='+input.maxlength }
             ${input.minlength && 'minlength='+input.minlength }
             ${input.readonly && 'disabled'}
@@ -90,35 +97,6 @@ const textInputBuilder = (input: Input): string => {
     </div>
    `
 };
-
-const competenciasInputBuilder = (registrationType: 'empresas' | 'candidatos'): string => {
-    return `
-    <div class="d-flex flex-column col-5">
-        <div>
-            <label for="competencia" class="form-label">Competencias</label>
-            <input type="text" id="competencia" class="form-control mb-3">
-        </div>
-        <div>
-            <label for="experiencia-competencia" class="form-label">Anos de Experiência</label>
-            <input type="number" step="0.5" id="experiencia-competencia" class="form-control mb-3">
-        </div>
-        <div>
-            <label>${registrationType === 'empresas' ? 'Importância para a Vaga (1 a 5)' : 'Nível de Afinidade (1 a 5)'}</label>
-            <input value="1" type="number" min="1" max="5" step="1" id="importancia-competencia" class="form-control mb-3">    
-        </div>
-       
-        <button type="button" id="competencia-btn" class="btn btn-outline-primary">Adicionar Competencia</button>
-    </div>
-    <div class="col-5 text-center">
-        <p class="mb-2">Lista de Competências Adicionadas</p>
-        <small>Clique em uma competência para removê-la da lista</small>
-        <ul id="competencias-list" class="list-group text-center">
-            
-        </ul>
-    </div>
-    
-    `
-}
 
 const buildRegistrationForm = () => {
     const inputContainer = <HTMLDivElement> document.getElementById("inputs-container");
@@ -152,7 +130,7 @@ const checkFormErrors = (registrationType: 'empresas' | 'candidatos') => {
 
     for (key in validationErrors) {
         if (validationErrors[key]) {
-            if (registrationType === 'empresas' && key === 'cpf') {
+            if (registrationType === 'empresas' && ['cpf', 'linkedin', 'telefone', 'idade'].includes(key)) {
                 break;
             } else if (registrationType === 'candidatos' && key === 'cnpj') {
                 break;
@@ -179,11 +157,11 @@ const submitRegistration = (event: SubmitEvent) => {
 
         const usuario: Usuario = {
             id: 0,
-            nome: <string> data.get('nome'),
-            senha: <string> data.get('senha'),
+            nome: (<string> data.get('nome')).trim(),
+            senha: (<string> data.get('senha')).trim(),
             competencias: userCompetencias,
-            descricao: <string> data.get('descricao'),
-            email: <string> data.get('email'),
+            descricao: (<string> data.get('descricao')).trim(),
+            email: (<string> data.get('email')).trim(),
             endereco: <Endereco> {
                 cep: <string> data.get('cep'),
                 estado: <string> data.get('estado'),
@@ -202,7 +180,9 @@ const submitRegistration = (event: SubmitEvent) => {
             const candidato: Candidato = {
                 ...usuario,
                 cpf: <string> data.get('cpf'),
-                idade: Number(data.get('idade'))
+                idade: Number(data.get('idade')),
+                telefone: <string> data.get('telefone'),
+                linkedin: <string> data.get('linkedin')
             }
 
             registerUser(candidato, "candidato");
@@ -214,7 +194,9 @@ const submitRegistration = (event: SubmitEvent) => {
     } catch (e) {
         if (e instanceof EmailInUseError) {
             const emailError = <HTMLElement> document.getElementById('email-error-message');
+            const formError = <HTMLElement> document.getElementById('form-error-message');
             emailError.removeAttribute('hidden')
+            formError.innerText = 'Email já está em uso';
         }
 
         if (e instanceof FormInvalidError) {

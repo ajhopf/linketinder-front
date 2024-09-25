@@ -1,33 +1,27 @@
-import {closeModal, handleMouseOverCard} from "./handlers";
+import { handleCandidatoCurtidaClick} from "./handlers";
+import { genericOpenAndPopulateModal } from "../../../shared/modal/modal-handlers";
+import {Popover} from "bootstrap";
+import {getUserById} from "../../../../service/user-service";
+
+import {buildCompetenciaListForTooltip} from "../../../shared/card/card";
 
 const addCandidatosCardsEventListeners = () => {
-    const cards = <HTMLCollectionOf<HTMLDivElement>> document.getElementsByClassName('candidato-card');
+    const cards = <HTMLCollectionOf<HTMLDivElement>> document.getElementsByClassName('item-card');
 
     for (let i = 0; i < cards.length; i++) {
         const card = cards[i];
+        const candidatoId = card.id.split('-')[2];
 
-        card.addEventListener('mouseover', handleMouseOverCard);
-    }
+        const candidato = getUserById(Number(candidatoId), 'candidatos');
 
-    const closeModalBtn = <HTMLButtonElement> document.getElementById('close-candidato-modal-btn');
-    const modalBackground = <HTMLDivElement> document.getElementById('candidato-modal')
-    const modalCardContainer = <HTMLDivElement> document.getElementById('modal-card-container');
+        card.addEventListener('click', (event) => genericOpenAndPopulateModal(event, 'candidato', handleCandidatoCurtidaClick));
 
-    closeModalBtn.addEventListener('click', closeModal);
-    modalBackground.addEventListener('click', closeModal);
-    modalCardContainer.addEventListener('click', (event) => {
-        event.stopPropagation(); // Prevent the click from reaching the parent div
-    });
-}
-
-const removeCandidatosCardsEventListeners = () => {
-    const cards = <HTMLCollectionOf<HTMLDivElement>> document.getElementsByClassName('candidato-card');
-
-    for (let i = 0; i < cards.length; i++) {
-        const card = cards[i];
-        card.removeEventListener('mouseover', handleMouseOverCard);
+        new Popover(card, {
+            trigger: 'hover',
+            content: buildCompetenciaListForTooltip(candidato.competencias),
+            html: true
+        })
     }
 }
 
-
-export {addCandidatosCardsEventListeners, removeCandidatosCardsEventListeners}
+export {addCandidatosCardsEventListeners}

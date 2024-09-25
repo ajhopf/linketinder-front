@@ -1,5 +1,12 @@
 # Linketinder | Front-end
 
+# Atenção!
+
+Credenciais para login com usuario teste após utilizar a função "popular local storage":
+
+email: usuario@teste.com
+senha: Usuario@123
+
 ## Introdução
 Este projeto é a primeira versão do Linketinder, um projeto audacioso que visa facilitar a contratação de talentos por empresas. A aplicação consiste em uma mistura de Linkedin com Tinder, onde teremos candidatos em empresas em busca de um match perfeito.
 
@@ -15,9 +22,18 @@ Você poderá visualizar o sitema em funcionamento no link: https://linketinder-
 
 Se você deseja executar o sistema diretamente em sua máquina faça o clone deste repositório, instale as dependências com o comando 'npm install' e execute o sistema com o comando 'npm start'.
 
+### Populando o Local Storage e utilizando o login padrão
 
-Por padrão não existem empresas e candidatos cadastrados.
-Em breve adicionaremos a funcionalidade que possibilita a inserção automática de candidatos, vagas, empresas e interações, facilitando a visualização das funcionalidades do sitema.
+Na tela inicial, onde é possível fazer o login no sistema, existe um botão verde no final da tela que, ao ser clicado, irá instanciar 10 empresas, 10 candidatos e 13 vagas.
+Com isso ao entrar no sistema será possível visualizar o sistema com algumas informações já existentes.
+
+Após clicar no botão, para fazer o login tanto como empresa como candidato utilize as seguintes credenciais:
+
+email: usuario@teste.com
+senha: Usuario@123
+
+![img_6.png](img_6.png)
+    
 
 ## Entendendo o Sistema
 
@@ -33,7 +49,11 @@ No perfil do candidato é possível visualizar todas as vagas disponíveis, alé
 
 ![img.png](img.png)
 
-Ao posicionar o mouse sobre o card de uma vaga um modal será aberto contendo informações da vaga com mais detalhes e também é possível clicar no ícone no canto superior direito para curtir ou descurtir uma vaga.
+Ao posicionar o mouse sobre o card de uma vaga, um tooltip com mais informações sobre a vaga será disponibilizado. No tooltip é possível visualizar todas as competências necessárias para aquela posição.
+
+![img_5.png](img_5.png)
+
+Ao clicar no card, um modal será aberto contendo informações da vaga com mais detalhes e também é possível clicar no ícone no canto superior direito para curtir ou descurtir uma vaga.
 
 O modal poderá ser fechado tanto ao clicar fora do card quanto ao clicar no botão 'close'
 ![img_1.png](img_1.png)

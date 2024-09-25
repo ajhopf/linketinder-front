@@ -1,59 +1,64 @@
-import {competenciasExigidasParaVaga, handleAddCompetencia, handleRemoveCompetencia} from "./input-handlers";
 import {Vaga} from "../../../../model/Vaga";
 import {createVaga} from "../../../../service/vagas-service";
+import {competenciasInputBuilder} from "../../../shared/competencia-form/competencia-form-builder";
+import {FormInvalidError} from "../../../../errors/registration-form-errors/form-invalid-error";
+import Competencia from "../../../../model/Competencia";
+import {Toast} from "bootstrap";
+
+interface CriarVagaValidationErrors {
+    descricao: boolean,
+    titulo: boolean
+}
+
+const criarVagaValidationErrors: CriarVagaValidationErrors = {
+    descricao: true,
+    titulo: true
+}
+
+const competenciasExigidasParaVaga: Competencia[] = [];
 
 const buildVagaForm = () => {
     return `
-        <form id="vaga-form" class="mb-3">
-          <div class="row">
-              <div class="mb-3 col-5">
-                <label for="titulo" class="form-label">Título da Vaga</label>
-                <input name="titulo" id="titulo" type="text" class="form-control"  required/>
+        <div class="row justify-content-center">
+            <form id="vaga-form" class="mb-3 col-12">
+              <div class="row justify-content-center">
+                  <div class="mb-3 col-5">
+                    <label for="titulo" class="form-label">Título da Vaga</label>
+                    <input name="titulo" id="titulo" type="text" class="form-control"  required/>
+                    <div class="d-flex justify-content-center mb-3">
+                       <small hidden id="titulo-error-message" class="text-danger text-center"></small>
+                    </div>
+                  </div>
+                  <div class="mb-3 col-5">
+                    <label for="descricao"  class="form-label">Descrição da Vaga</label>
+                    <textarea name="descricao" id="descricao" type="text" class="form-control" required> </textarea>
+                    <div class="d-flex justify-content-center mb-3">
+                       <small hidden id="descricao-error-message" class="text-danger text-center"></small>
+                    </div>
+                  </div>
               </div>
-              <div class="mb-3 col-5">
-                <label for="descricao"  class="form-label">Descrição da Vaga</label>
-                <textarea name="descricao" id="descricao" type="text" class="form-control" required> </textarea>
+              
+              <div class="row justify-content-center">
+                ${competenciasInputBuilder('empresas')}
               </div>
-          </div>
-          
-          <div class="row">
-            ${competenciasInputBuilder()}
-          </div>
-          <div class="d-flex justify-content-center mb-3">
-            <small hidden id="form-error-message" class="text-danger text-center"></small>
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Adicionar Vaga</button>
-        </form>
-    `
-}
-
-const competenciasInputBuilder = (): string => {
-    return `
-    <div class="d-flex flex-column col-5">
-        <div>
-            <label for="competencia" class="form-label">Competencias</label>
-            <input type="text" id="competencia" class="form-control mb-3">
+              <div class="d-flex justify-content-center mb-3">
+                <small hidden id="form-error-message" class="text-danger text-center"></small>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Adicionar Vaga</button>
+            </form>
         </div>
-        <div>
-            <div>
-                <label for="experiencia-competencia" class="form-label">Anos de Experiência Exigido</label>
-                <input type="number" step="0.5" id="experiencia-competencia" class="form-control mb-3" >
-            </div>
-            <div>
-                <label>Importância para a Vaga (1 a 5)</label>
-                <input value="1" type="number" min="1" max="5" step="1" id="importancia-competencia" class="form-control mb-3">    
+        <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+            <div id="vaga-criada-toast"  class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="toast-header">
+                <strong class="me-auto">Vaga criada com sucesso</strong>       
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+              <div class="toast-body">
+                <p id="toast-text" class="text-white"></p>
+              </div>
             </div>
         </div>
-        <button type="button" id="competencia-btn" class="btn btn-outline-primary">Adicionar Competencia</button>
-    </div>
-    <div class="text-center col-5">
-        <p class="mb-2">Lista de Competências Adicionadas</p>
-        <small>Clique em uma competência para removê-la da lista</small>
-        <ul id="competencias-list" class="list-group text-center">
-            
-        </ul>
-    </div>
-    
+        
     `
 }
 
@@ -65,12 +70,6 @@ const removeFormError = () => {
     }
 }
 
-const showFormError = (message: string) => {
-    const formError = <HTMLElement> document.getElementById('form-error-message');
-    formError.innerText = message;
-    formError.removeAttribute('hidden');
-}
-
 const clearVagaForm = () => {
     const form = <HTMLFormElement> document.getElementById('vaga-form');
     const competenciasList = <HTMLUListElement> document.getElementById('competencias-list')
@@ -78,7 +77,6 @@ const clearVagaForm = () => {
     competenciasExigidasParaVaga.splice(0)
 
     for (let child of competenciasList.children) {
-        child.removeEventListener('click', handleRemoveCompetencia);
         child.remove();
     }
 
@@ -88,49 +86,58 @@ const clearVagaForm = () => {
     form.reset();
 }
 
-const submitVaga = (event: SubmitEvent) => {
-    event.preventDefault();
-    const form = <HTMLFormElement> document.getElementById('vaga-form');
+const checkFormErrors = () => {
+    let key: keyof CriarVagaValidationErrors
 
-    const data = new FormData(form);
+    for (key in criarVagaValidationErrors) {
+        if (criarVagaValidationErrors[key]) {
+            throw new FormInvalidError(`Formulário inválido. Campo: ${key}`)
+        }
+    }
 
     if (competenciasExigidasParaVaga.length === 0) {
-        showFormError("Adicione ao menos uma competência para a vaga.")
-        return;
+        throw new FormInvalidError('Adicione ao menos uma competência')
     }
-
-    const vaga: Vaga = {
-        id: 0,
-        titulo: <string> data.get('titulo'),
-        descricao: <string> data.get('descricao'),
-        competencias: competenciasExigidasParaVaga,
-        empresaId: JSON.parse(localStorage.getItem('loggedUser')!).id
-    }
-
-    if (vaga.descricao.trim().length === 0) {
-        showFormError("Adicione um título para a vaga.");
-        return;
-    }
-
-    if (vaga.titulo.trim().length === 0) {
-        showFormError("A vaga deve ter uma descrição.");
-        return;
-    }
-
-    createVaga(vaga);
-    clearVagaForm();
 }
 
 
-const addEventListeneresToVagaForm = () => {
-    const addCompetenciaBtn = <HTMLButtonElement> document.getElementById("competencia-btn");
+const submitVaga = (event: SubmitEvent) => {
+    event.preventDefault();
 
-    addCompetenciaBtn.addEventListener('click', () => {
-        handleAddCompetencia();
-    })
+    try {
+        const form = <HTMLFormElement> document.getElementById('vaga-form');
 
-    const form = <HTMLFormElement> document.getElementById('vaga-form');
-    form.addEventListener('submit', submitVaga);
+        checkFormErrors();
+
+        const data = new FormData(form);
+
+        const vaga: Vaga = {
+            id: 0,
+            titulo: <string> data.get('titulo'),
+            descricao: <string> data.get('descricao'),
+            competencias: competenciasExigidasParaVaga,
+            empresaId: JSON.parse(localStorage.getItem('loggedUser')!).id
+        }
+
+        createVaga(vaga);
+
+        const toastEl = <HTMLDivElement> document.getElementById('vaga-criada-toast');
+        const toastText = <HTMLParagraphElement> document.getElementById('toast-text');
+        toastText.innerText = "Título da vaga criada: " + vaga.titulo;
+
+        const toast = new Toast(toastEl);
+        toast.show();
+
+        clearVagaForm();
+    } catch (e) {
+        if (e instanceof FormInvalidError) {
+            const formError = <HTMLElement> document.getElementById('form-error-message');
+            formError.innerText = e.message;
+            formError.removeAttribute('hidden')
+        }
+    }
+
 }
 
-export {buildVagaForm, competenciasInputBuilder, addEventListeneresToVagaForm, clearVagaForm}
+
+export {buildVagaForm, clearVagaForm, submitVaga, criarVagaValidationErrors, CriarVagaValidationErrors, competenciasExigidasParaVaga}

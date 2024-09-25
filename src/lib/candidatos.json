@@ -2,8 +2,8 @@
   "candidatos": [
     {
       "id": 0,
-      "nome": "André Jaques Hopf",
-      "senha": "$2a$10$yWeg4hNecI6UjFMva4qDteAwzRDH/jM7MIrA9YQptpw4Koku0Qwb2",
+      "nome": "Candidato Teste",
+      "senha": "Usuario@123",
       "competencias": [
         {
           "competencia": "Java",
@@ -32,11 +32,11 @@
         }
       ],
       "descricao": "Dev Full Stack",
-      "email": "andre.hopf@gmail.com",
+      "email": "usuario@teste.com",
       "endereco": {
         "cep": "88063-074",
-        "estado": null,
-        "pais": null
+        "estado": "Santa Catarina",
+        "pais": "Brasil"
       },
       "cpf": "022.567.470-00",
       "idade": 32

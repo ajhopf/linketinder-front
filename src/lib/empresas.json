@@ -1,0 +1,163 @@
+{
+  "empresas": [
+    {
+      "id": 1,
+      "nome": "Empresa Teste",
+      "senha": "Usuario@123",
+      "email": "usuario@teste.com",
+      "descricao": "A leading tech company specializing in innovative software solutions.",
+      "endereco": {
+        "estado": "SP",
+        "cep": "01310-300",
+        "pais": "Brasil"
+      },
+      "cnpj": "12.345.678/9123-45",
+      "competencias": [
+        { "competencia": "Java", "anosExperencia": 5, "importancia": 4 },
+        { "competencia": "React", "anosExperencia": 3, "importancia": 5 },
+        { "competencia": "AWS", "anosExperiencia": 2, "importancia": 3 }
+      ]
+    },
+    {
+      "id": 2,
+      "nome": "Data Masters Ltd.",
+      "senha": "securepass",
+      "email": "info@datamasters.com.br",
+      "descricao": "Experts in data analytics and machine learning.",
+      "endereco": {
+        "estado": "Rio de Janeiro",
+        "cep": "22041-010",
+        "pais": "Brasil"
+      },
+      "cnpj": "98.765.432/1098-76",
+      "competencias": [
+        { "competencia": "Python", "anosExperencia": 7, "importancia": 5 }
+      ]
+    },
+    {
+      "id": 3,
+      "nome": "Web Wizards Corp.",
+      "senha": "webpass",
+      "email": "hello@webwizards.com.br",
+      "descricao": "Crafting beautiful and functional websites.",
+      "endereco": {
+        "estado": "São Paulo",
+        "cep": "05423-010",
+        "pais": "Brasil"
+      },
+      "cnpj": "56.789.012/3456-78",
+      "competencias": [
+        { "competencia": "JavaScript", "anosExperencia": 6, "importancia": 5 },
+        { "competencia": "Angular", "anosExperencia": 2, "importancia": 3 },
+        { "competencia": "HTML", "anosExperencia": 7, "importancia": 5 },
+        { "competencia": "CSS", "anosExperencia": 6, "importancia": 4 }
+      ]
+    },
+    {
+      "id": 4,
+      "nome": "Mobile Mavericks LLC.",
+      "senha": "mobile123",
+      "email": "contact@mobilemavericks.com.br",
+      "descricao": "Building cutting-edge mobile applications.",
+      "endereco": {
+        "estado": "Minas Gerais",
+        "cep": "30140-055",
+        "pais": "Brasil"
+      },
+      "cnpj": "34.567.890/1234-56",
+      "competencias": [
+        { "competencia": "Swift", "anosExperencia": 4, "importancia": 4 },
+        { "competencia": "React Native", "anosExperencia": 2, "importancia": 3 },
+        { "competencia": "Kotlin", "anosExperencia": 3, "importancia": 4 }
+      ]
+    },{
+      "id": 5,
+      "nome": "Cloud Ninjas Inc.",
+      "senha": "cloudpass",
+      "email": "info@cloudninjas.com.br",
+      "descricao": "Masters of cloud infrastructure and DevOps.",
+      "endereco": {
+        "estado": "Rio Grande do Sul",
+        "cep": "90619-900",
+        "pais": "Brasil"
+      },
+      "cnpj": "78.901.234/5678-90",
+      "competencias": [
+        { "competencia": "Docker", "anosExperencia": 3, "importancia": 4 },
+        { "competencia": "Kubernetes", "anosExperencia": 1, "importancia": 2 },
+        { "competencia": "AWS", "anosExperencia": 5, "importancia": 5 }
+      ]
+    },
+    {
+      "id": 6,
+      "nome": "Game Gurus Ltda.",
+      "senha": "gameon",
+      "email": "contato@gamegurus.com.br",
+      "descricao": "Developing immersive gaming experiences.",
+      "endereco": {
+        "estado": "Pará",
+        "cep": "80215-030",
+        "pais": "Brasil"
+      },
+      "cnpj": "24.681.357/9135-79",
+      "competencias": [
+        { "competencia": "C++", "anosExperencia": 8, "importancia": 5 }
+      ]
+    },
+    {
+      "id": 7,
+      "nome": "AI Pioneers Ltd.",
+      "senha": "aipass",
+      "email": "contato@aipioneers.com.br",
+      "descricao": "Pushing the boundaries of artificial intelligence.",
+      "endereco": {
+        "estado": "São Paulo",
+        "cep": "13083-805",
+        "pais": "Brasil"
+      },
+      "cnpj": "13.579.246/8013-57",
+      "competencias": [
+        { "competencia": "Python", "anosExperencia": 6, "importancia": 5 },
+        { "competencia": "Terraform", "anosExperencia": 3, "importancia": 4 },
+        { "competencia": "Machine Learning", "anosExperencia": 4, "importancia": 5 }
+      ]
+    },
+    {
+      "id": 8,
+      "nome": "Cybersecurity Sentinels Inc.",
+      "senha": "secure123",
+      "email": "info@cybersecuritysentinels.com.br",
+      "descricao": "Protecting digital assets from threats.",
+      "endereco": {
+        "estado": "Goiás",
+        "cep": "70719-900",
+        "pais": "Brasil"
+      },
+      "cnpj": "90.123.456/7890-12",
+      "competencias": [
+        { "competencia": "C#", "anosExperencia": 5, "importancia": 4 },
+        { "competencia": "Kubernetes", "anosExperencia": 3, "importancia": 3 },
+        { "competencia": "Linux", "anosExperencia": 6, "importancia": 4 }
+      ]
+    },
+    {
+      "id": 9,
+      "nome": "E-commerce Emporium Corp.",
+      "senha": "shoppass",
+      "email": "sales@ecommerceemporium.com.br",
+      "descricao": "Powering online stores and marketplaces.",
+      "endereco": {
+        "estado": "Santa Catarina",
+        "cep": "88034-000",
+        "pais": "Brasil"
+      },
+      "cnpj": "46.802.468/1357-91",
+      "competencias": [
+        { "competencia": "PHP", "anosExperencia": 7, "importancia": 5 },
+        { "competencia": "Java", "anosExperencia": 4, "importancia": 3 },
+        { "competencia": "JavaScript", "anosExperencia": 5, "importancia": 4 },
+        { "competencia": "Node.js", "anosExperencia": 3, "importancia": 3 }
+      ]
+    }
+  ]
+}
